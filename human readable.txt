@@ -1,0 +1,90 @@
+Step-by-Step Planning for Online Recipe App
+
+1. Project Setup
+   - Create a New React Project:
+     - Use the command `npx create-react-app online-recipe-app` to set up the React project.
+   - Install Dependencies:
+     - Install `react-router-dom` for routing with `npm install react-router-dom`.
+     - Install `axios` for making HTTP requests with `npm install axios`.
+     - Install `bcryptjs` for password encryption with `npm install bcryptjs`.
+     - Install `json-server` to create a mock backend with `npm install json-server`.
+
+2. Define Project Structure
+   - Create Folders:
+     - `src/components/` - For React components.
+     - `src/pages/` - For page components.
+     - `src/services/` - For API calls and utility functions.
+     - `src/styles/` - For CSS or styling files.
+   - Setup Routing:
+     - Configure `App.js` to include routes for different pages using `react-router-dom`.
+
+3. Design the User Interface
+   - Create Wireframes:
+     - Design wireframes for the Login Page, Registration Page, Home Page, and Profile Page.
+   - Create a Moodboard:
+     - Define colors, typography, and visual style for the app.
+
+4. Implement User Management
+   - Registration Page:
+     - Create a form with fields for Name, Surname, Email, Username, and Password.
+     - Use `bcryptjs` to hash passwords before sending them to the server.
+   - Login Page:
+     - Create a form with fields for Username and Password.
+     - Use `bcryptjs` to compare hashed passwords for authentication.
+   - Profile Page:
+     - Allow users to view and update their profile information and credentials.
+   - Protected Routing:
+     - Implement route protection to restrict access to certain pages based on the user's authentication status.
+
+5. Implement Recipe Management
+   - Recipe List Page:
+     - Display a list of recipes fetched from the JSON server.
+     - Implement search functionality to filter recipes by name and category.
+   - Add Recipe Page:
+     - Create a form to add a new recipe with fields for Recipe Name, Ingredients, Instructions, Category, Preparation Time, Cooking Time, and Servings.
+   - Edit Recipe Page:
+     - Allow users to edit existing recipes.
+   - Delete Recipe Functionality:
+     - Implement a feature to delete recipes from the list.
+
+6. Setup JSON Server
+   - Create a `db.json` File:
+     - Define initial data for users and recipes.
+   - Configure JSON Server:
+     - Add a script in `package.json` to start the JSON server: `"server": "json-server --watch db.json --port 5000"`.
+
+7. Connect Frontend and Backend
+   - API Service:
+     - Create API functions in `src/services/api.js` for GET, POST, DELETE, and PATCH/PUT requests to interact with the JSON server.
+   - Handle Data Fetching:
+     - Use `axios` to fetch data from the JSON server and update the state in React components.
+
+8. Implement Functionality
+   - User Registration and Login:
+     - Implement registration and login logic in `Login.js` and `Registration.js`.
+   - Recipe Management:
+     - Implement add, update, view, and delete functionalities in the respective components.
+
+9. Styling and Responsiveness
+   - Create Styles:
+     - Add CSS or use a CSS-in-JS solution to style the app.
+   - Ensure Responsiveness:
+     - Test and adjust the layout for different screen sizes (320px, 480px, 768px, 1024px, 1200px).
+
+10. Testing and Debugging
+    - Test Components:
+      - Ensure all components are working as expected.
+    - Debug Issues:
+      - Fix any issues related to functionality or UI.
+
+11. Documentation and Final Touches
+    - Document the Project:
+      - Write a README file with instructions on how to set up and run the project.
+    - Push to GitHub:
+      - Use GitHub for version control, create frequent commits, and push the project to a repository.
+
+12. Deployment
+    - Deploy the App:
+      - Deploy the app to a hosting platform like Vercel or Netlify.
+    - Submit GitHub Link:
+      - Ensure the GitHub repository link is shared for submission.

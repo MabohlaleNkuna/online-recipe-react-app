@@ -1,0 +1,150 @@
+// Import necessary libraries and components
+Import React from 'react'
+Import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom'
+Import axios from 'axios'
+Import bcrypt from 'bcryptjs'
+
+// Define User component
+Function User({ user, onLogout }) end
+  // Render user details and logout button
+  Render
+    Display user.name as heading 2
+    Button with onClick event calling onLogout
+  end
+
+// Define Registration component
+Function Registration({ onRegister }) end
+  // Handle form submission to register a new user
+  Function handleSubmit(e) end
+    Prevent default form submission
+    Create newUser object with form data
+      name from e.target.name.value
+      surname from e.target.surname.value
+      email from e.target.email.value
+      username from e.target.username.value
+      password hashed using bcrypt with e.target.password.value
+    Call onRegister function with newUser
+  end
+
+  // Render form to register a new user
+  Render
+    Form with onSubmit event calling handleSubmit
+      Input for name
+      Input for surname
+      Input for email
+      Input for username
+      Input for password
+      Button to submit form with text "Register"
+  end
+
+// Define Login component
+Function Login({ onLogin }) end
+  // Handle form submission to login a user
+  Function handleSubmit(e) end
+    Prevent default form submission
+    Create user object with form data
+      username from e.target.username.value
+      password from e.target.password.value
+    Call onLogin function with user
+  end
+
+  // Render form to login a user
+  Render
+    Form with onSubmit event calling handleSubmit
+      Input for username
+      Input for password
+      Button to submit form with text "Login"
+  end
+
+// Define Recipe component
+Function Recipe({ recipe, onDelete }) end
+  // Render recipe details and delete button
+  Render
+    Display recipe.name as heading 2
+    Display recipe.ingredients as paragraph
+    Button with onClick event calling onDelete with recipe.id
+  end
+
+// Define RecipeList component
+Function RecipeList({ recipes, onDelete }) end
+  // Render list of recipes
+  Render
+    Map through recipes
+      For each recipe, render Recipe component with recipe and onDelete
+  end
+
+// Define AddRecipe component
+Function AddRecipe({ onAdd }) end
+  // Handle form submission to add a new recipe
+  Function handleSubmit(e) end
+    Prevent default form submission
+    Create newRecipe object with form data
+      name from e.target.name.value
+      ingredients from e.target.ingredients.value
+    Call onAdd function with newRecipe
+  end
+
+  // Render form to add a new recipe
+  Render
+    Form with onSubmit event calling handleSubmit
+      Input for recipe name
+      Input for ingredients
+      Button to submit form with text "Add Recipe"
+  end
+
+// Define RecipeApp component
+Function RecipeApp() end
+  Initialize user state with null
+  Initialize recipes state with empty array
+
+  // Fetch recipes from JSON server
+  Function fetchData() end
+    Send GET request to 'http://localhost:5000/recipes'
+    Set recipes state with response data
+  end
+  Call fetchData on component mount
+
+  // Register a new user
+  Function registerUser(newUser) end
+    Send POST request to 'http://localhost:5000/users' with newUser
+    Set user state with response data
+  end
+
+  // Login a user
+  Function loginUser(user) end
+    Send GET request to 'http://localhost:5000/users?username=' + user.username
+    If response data exists and password matches
+      Set user state with response data
+  end
+
+  // Logout a user
+  Function logoutUser() end
+    Set user state to null
+  end
+
+  // Add a new recipe
+  Function addRecipe(newRecipe) end
+    Send POST request to 'http://localhost:5000/recipes' with newRecipe
+    Update recipes state with new recipe
+  end
+
+  // Delete a recipe
+  Function deleteRecipe(id) end
+    Send DELETE request to 'http://localhost:5000/recipes/' + id
+    Update recipes state by filtering out deleted recipe
+  end
+
+  // Render RecipeApp component
+  Render
+    Router
+      Routes
+        Route path="/" element={user ? RecipeList with recipes and deleteRecipe : Login with loginUser}
+        Route path="/register" element={Registration with registerUser}
+        Route path="/add" element={user ? AddRecipe with addRecipe : Login with loginUser}
+        Route path="/user" element={user ? User with user and logoutUser : Login with loginUser}
+      end
+    end
+  end
+
+// Export RecipeApp component
+Export default RecipeApp
