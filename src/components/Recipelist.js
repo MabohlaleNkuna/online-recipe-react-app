@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import SearchBar from './SearchBar'; 
 
 const fetchRecipes = async () => {
     const response = await fetch('http://localhost:4000/Recipe');
@@ -38,7 +39,7 @@ const RecipeList = () => {
         recipeName: '',
         ingredients: '',
         instructions: '',
-        category: 'Breakfast', // Default category
+        category: '', 
         preparation: '',
         time: '',
         cookingTime: '',
@@ -46,12 +47,13 @@ const RecipeList = () => {
     });
     const [editRecipeId, setEditRecipeId] = useState(null);
     const [editRecipe, setEditRecipe] = useState({});
+    const [searchQuery, setSearchQuery] = useState(''); 
 
     useEffect(() => {
         const getRecipes = async () => {
             try {
                 const data = await fetchRecipes();
-                // Filter out recipes with empty fields
+                // Filtering out recipes with empty fields
                 const filteredData = data.filter(recipe =>
                     recipe.recipeName.trim() !== '' &&
                     recipe.ingredients.trim() !== '' &&
@@ -96,7 +98,7 @@ const RecipeList = () => {
                 recipeName: '',
                 ingredients: '',
                 instructions: '',
-                category: 'Breakfast', // Reset to default category
+                category: 'Breakfast', 
                 preparation: '',
                 time: '',
                 cookingTime: '',
@@ -133,11 +135,22 @@ const RecipeList = () => {
         }
     };
 
+    const handleSearchChange = (e) => {
+        setSearchQuery(e.target.value); 
+    };
+
+    // search recipes based on the search query
+    const filteredRecipes = recipes.filter(recipe =>
+        recipe.recipeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+
     return (
         <>
             <section>
                 <section>
                     <h1>Recipe List</h1>
+                    <SearchBar searchQuery={searchQuery} handleSearchChange={handleSearchChange} />
                 </section>
                 <section>
                     <form onSubmit={handleAddRecipe}>
@@ -283,7 +296,7 @@ const RecipeList = () => {
                             </tr>
                         </thead>
                         <tbody>
-                            {recipes.map((recipe) => (
+                            {filteredRecipes.map((recipe) => (
                                 <tr key={recipe.id}>
                                     <td>{recipe.recipeName}</td>
                                     <td>{recipe.ingredients}</td>
