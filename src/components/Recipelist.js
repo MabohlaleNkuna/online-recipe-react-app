@@ -2,13 +2,13 @@ import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar'; 
 
 const fetchRecipes = async () => {
-    const response = await fetch('http://localhost:4000/Recipe');
+    const response = await fetch('http://localhost:3000/Recipe');
     if (!response.ok) throw new Error('Failed to fetch Recipe');
     return response.json();
 };
 
 const addRecipe = async (recipe) => {
-    const response = await fetch('http://localhost:4000/Recipe', {
+    const response = await fetch('http://localhost:3000/Recipe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(recipe),
@@ -18,14 +18,14 @@ const addRecipe = async (recipe) => {
 };
 
 const deleteRecipe = async (id) => {
-    const response = await fetch(`http://localhost:4000/Recipe/${id}`, {
+    const response = await fetch(`http://localhost:3000/Recipe/${id}`, {
         method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete recipe');
 };
 
 const updateRecipe = async (id, updatedRecipe) => {
-    const response = await fetch(`http://localhost:4000/Recipe/${id}`, {
+    const response = await fetch(`http://localhost:3000/Recipe/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedRecipe),

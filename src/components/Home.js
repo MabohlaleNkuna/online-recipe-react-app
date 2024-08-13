@@ -2,7 +2,7 @@ import RecipeList from './Recipelist';
 import useFetch from '../middleware/useFetch';
 
 const Home = () => {
-    const { data: recipes, isPending, error } = useFetch('http://localhost:4000/Recipe');
+    const { data: recipes, isPending, error } = useFetch('http://localhost:3000/Recipe');
 
     return (
         <section>
