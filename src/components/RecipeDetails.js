@@ -15,8 +15,6 @@ const RecipeDetails = () => {
     const [isPending, setIsPending] = useState(false);
 
     useEffect(() => {
-        // If you have some API logic, you can add it here, otherwise it can be omitted.
-        // Set isPending to false once data is fetched if you choose to include API logic.
         setIsPending(false);
     }, []);
 

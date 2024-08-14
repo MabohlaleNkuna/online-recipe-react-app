@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Button from './Button';
 import '../styles/ProfilePage.css';
 
 function Modal({ isOpen, onClose, children }) {
@@ -73,7 +74,7 @@ function ProfilePage() {
                     body: JSON.stringify({
                         ...userData,
                         ...newData,
-                        password: newPassword || userData.password, 
+                        password: newPassword || userData.password,
                     }),
                 });
                 if (response.ok) {
@@ -167,8 +168,16 @@ function ProfilePage() {
                 <p><strong>Name:</strong> {userData.name}</p>
                 <p><strong>Surname:</strong> {userData.surname}</p>
                 <p><strong>Email:</strong> {userData.email}</p>
-                <button onClick={() => setIsEditing(true)} className="button">Update Profile</button>
-                <button onClick={handleDeleteProfile} className="button delete-button">Delete Profile</button>
+                <Button 
+                    onClick={() => setIsEditing(true)} 
+                    label="Update Profile" 
+                    color="#004AAD" 
+                />
+                <Button 
+                    onClick={handleDeleteProfile} 
+                    label="Delete Profile" 
+                    color="#FF0000" 
+                />
             </div>
 
             {/* Modal for updating profile */}
@@ -202,7 +211,11 @@ function ProfilePage() {
                     <label>Profile Picture:</label>
                     <input type="file" onChange={handleProfilePictureChange} />
                 </div>
-                <button onClick={handleUpdateProfile} className="button">Save Changes</button>
+                <Button 
+                    onClick={handleUpdateProfile} 
+                    label="Save Changes" 
+                    color="#004AAD" 
+                />
 
                 <h3>Change Password</h3>
                 <div>
@@ -221,7 +234,11 @@ function ProfilePage() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
-                <button onClick={handleUpdatePassword} className="button">Change Password</button>
+                <Button 
+                    onClick={handleUpdatePassword} 
+                    label="Change Password" 
+                    color="#004AAD" 
+                />
             </Modal>
         </div>
     );

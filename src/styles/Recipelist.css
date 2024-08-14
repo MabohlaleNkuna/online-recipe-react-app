@@ -1,0 +1,142 @@
+
+section {
+    margin: 0 auto;
+    max-width: 1200px;
+    padding: 20px;
+    font-family: Arial, sans-serif;
+}
+
+h1 {
+    text-align: center;
+    color: #004AAD;
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+form input, form select, form button {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+form button {
+    background-color: #F4C561;
+    border: none;
+    color: #241D10;
+    cursor: pointer;
+}
+
+form button:hover {
+    background-color: #F4C561;
+    opacity: 0.8;
+}
+
+.SearchBar {
+    margin-bottom: 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.SearchBar input {
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    width: 100%;
+    max-width: 500px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+table, th, td {
+    border: 1px solid #ddd;
+}
+
+th {
+    background-color: #004AAD;
+    color: #FFFFFF;
+    padding: 10px;
+}
+
+tr {
+    display: block;
+    margin-bottom: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+td {
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+td::before {
+    content: attr(data-heading);
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    table, thead, tbody, th, td, tr {
+        display: block;
+    }
+
+    th, td {
+        box-sizing: border-box;
+        width: 100%;
+        padding: 10px;
+    }
+
+    td {
+        text-align: left;
+        position: relative;
+        padding-left: 50%;
+        white-space: nowrap;
+    }
+
+    td::before {
+        content: attr(data-heading);
+        position: absolute;
+        left: 0;
+        width: 45%;
+        padding-left: 10px;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    td {
+        padding-left: 50%;
+        border-bottom: 1px solid #ddd;
+    }
+}
+
+td img {
+    max-width: 100px;
+    max-height: 100px;
+    object-fit: cover;
+}
+
+button {
+    background-color: #F4C561;
+    border: none;
+    color: #241D10;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+button:hover {
+    background-color: #F4C561;
+    opacity: 0.8;
+}

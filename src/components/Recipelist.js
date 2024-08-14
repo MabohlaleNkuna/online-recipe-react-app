@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from './SearchBar'; 
+import SearchBar from './SearchBar';
+import Navbar from './Navbar'; 
+import '../styles/Recipelist.css';
 
 const fetchRecipes = async () => {
     const response = await fetch('http://localhost:3000/Recipe');
@@ -147,12 +149,15 @@ const RecipeList = () => {
 
     return (
         <>
+            <div style={styles.navbarContainer}>
+                <Navbar />
+            </div>
+
             <section>
-                <section>
-                    <h1>Recipe List</h1>
-                    <SearchBar searchQuery={searchQuery} handleSearchChange={handleSearchChange} />
-                </section>
-                <section>
+                <h1>Recipe List</h1>
+                <SearchBar searchQuery={searchQuery} handleSearchChange={handleSearchChange} />
+
+                {editRecipeId === null && (
                     <form onSubmit={handleAddRecipe}>
                         <input
                             type="text"
@@ -221,127 +226,136 @@ const RecipeList = () => {
                         />
                         <button type="submit">Add Recipe</button>
                     </form>
-                </section>
-                <section>
-                    {editRecipeId !== null && (
-                        <form onSubmit={handleUpdateRecipe}>
-                            <input
-                                type="text"
-                                name="recipeName"
-                                placeholder="Recipe Name"
-                                value={editRecipe.recipeName || ''}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="text"
-                                name="ingredients"
-                                placeholder="Ingredients"
-                                value={editRecipe.ingredients || ''}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="text"
-                                name="instructions"
-                                placeholder="Instructions"
-                                value={editRecipe.instructions || ''}
-                                onChange={handleChange}
-                            />
-                            <select
-                                name="category"
-                                value={editRecipe.category || 'Breakfast'}
-                                onChange={handleChange}
-                            >
-                                <option value="Breakfast">Breakfast</option>
-                                <option value="Lunch">Lunch</option>
-                                <option value="Dinner">Dinner</option>
-                            </select>
-                            <input
-                                type="text"
-                                name="preparation"
-                                placeholder="Preparation"
-                                value={editRecipe.preparation || ''}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="text"
-                                name="time"
-                                placeholder="Time"
-                                value={editRecipe.time || ''}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="text"
-                                name="cookingTime"
-                                placeholder="Cooking Time"
-                                value={editRecipe.cookingTime || ''}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="text"
-                                name="servings"
-                                placeholder="Servings"
-                                value={editRecipe.servings || ''}
-                                onChange={handleChange}
-                            />
-                            <input
-                                type="text"
-                                name="imageUrl"
-                                placeholder="Image URL"
-                                value={editRecipe.imageUrl || ''}
-                                onChange={handleChange}
-                            />
-                            <button type="submit">Update Recipe</button>
-                        </form>
-                    )}
-                </section>
-                <section>
-                    <table>
-                        <thead>
-                            <tr>
-                                <th>Image</th>
-                                <th>Recipe Name</th>
-                                <th>Ingredients</th>
-                                <th>Instructions</th>
-                                <th>Category</th>
-                                <th>Preparation</th>
-                                <th>Time</th>
-                                <th>Cooking Time</th>
-                                <th>Servings</th>
-                                <th>Actions</th>
+                )}
+
+                {/* Show Update Recipe form only if editRecipeId is set */}
+                {editRecipeId && (
+                    <form onSubmit={handleUpdateRecipe}>
+                        <input
+                            type="text"
+                            name="recipeName"
+                            placeholder="Recipe Name"
+                            value={editRecipe.recipeName}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="ingredients"
+                            placeholder="Ingredients"
+                            value={editRecipe.ingredients}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="instructions"
+                            placeholder="Instructions"
+                            value={editRecipe.instructions}
+                            onChange={handleChange}
+                        />
+                        <select
+                            name="category"
+                            value={editRecipe.category}
+                            onChange={handleChange}
+                        >
+                            <option value="Breakfast">Breakfast</option>
+                            <option value="Lunch">Lunch</option>
+                            <option value="Dinner">Dinner</option>
+                        </select>
+                        <input
+                            type="text"
+                            name="preparation"
+                            placeholder="Preparation"
+                            value={editRecipe.preparation}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="time"
+                            placeholder="Time"
+                            value={editRecipe.time}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="cookingTime"
+                            placeholder="Cooking Time"
+                            value={editRecipe.cookingTime}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="servings"
+                            placeholder="Servings"
+                            value={editRecipe.servings}
+                            onChange={handleChange}
+                        />
+                        <input
+                            type="text"
+                            name="imageUrl"
+                            placeholder="Image URL"
+                            value={editRecipe.imageUrl}
+                            onChange={handleChange}
+                        />
+                        <button type="submit">Update Recipe</button>
+                    </form>
+                )}
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Recipe Name</th>
+                            <th>Ingredients</th>
+                            <th>Instructions</th>
+                            <th>Category</th>
+                            <th>Preparation</th>
+                            <th>Time</th>
+                            <th>Cooking Time</th>
+                            <th>Servings</th>
+                            <th>Image</th>  
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {filteredRecipes.map((recipe) => (
+                            <tr key={recipe.id}>
+                                <td>{recipe.recipeName}</td>
+                                <td>{recipe.ingredients}</td>
+                                <td>{recipe.instructions}</td>
+                                <td>{recipe.category}</td>
+                                <td>{recipe.preparation}</td>
+                                <td>{recipe.time}</td>
+                                <td>{recipe.cookingTime}</td>
+                                <td>{recipe.servings}</td>
+                                <td>
+                                    <img
+                                        src={recipe.imageUrl}
+                                        alt={recipe.recipeName}
+                                        style={{ width: '100px', height: 'auto' }}
+                                    />
+                                </td>
+                                <td>
+                                    <button onClick={() => handleEditRecipe(recipe)}>Edit</button>
+                                    <button onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
+                                </td>
                             </tr>
-                        </thead>
-                        <tbody>
-                            {filteredRecipes.map((recipe) => (
-                                <tr key={recipe.id}>
-                                    <td>
-                                        {recipe.imageUrl && (
-                                            <img
-                                                src={recipe.imageUrl}
-                                                alt={recipe.recipeName}
-                                                style={{ width: '100px', height: '100px' }}
-                                            />
-                                        )}
-                                    </td>
-                                    <td>{recipe.recipeName}</td>
-                                    <td>{recipe.ingredients}</td>
-                                    <td>{recipe.instructions}</td>
-                                    <td>{recipe.category}</td>
-                                    <td>{recipe.preparation}</td>
-                                    <td>{recipe.time}</td>
-                                    <td>{recipe.cookingTime}</td>
-                                    <td>{recipe.servings}</td>
-                                    <td>
-                                        <button onClick={() => handleEditRecipe(recipe)}>Edit</button>
-                                        <button onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
-                                    </td>
-                                </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </section>
+                        ))}
+                    </tbody>
+                </table>
             </section>
         </>
     );
 };
 
 export default RecipeList;
+
+const styles = {
+    navbarContainer: {
+        position: 'absolute',
+        top: '0',
+        right: '0',
+        padding: '10px',
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'flex-end',
+    },
+};

@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import RecipeCard from './RecipeCard';
+import Button from './Button';
 
 function HomePage() {
     const [userData, setUserData] = useState(null);
@@ -8,7 +10,7 @@ function HomePage() {
     const [searchTerm, setSearchTerm] = useState('');
     const [error, setError] = useState(null);
     const [isPending, setIsPending] = useState(true);
-    const [selectedRecipe, setSelectedRecipe] = useState(null); 
+    const [selectedRecipe, setSelectedRecipe] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -33,7 +35,7 @@ function HomePage() {
 
         const fetchRecipes = async () => {
             try {
-                const response = await fetch('http://localhost:3000/Recipe'); 
+                const response = await fetch('http://localhost:3000/Recipe');
                 if (!response.ok) throw new Error('Failed to fetch recipes');
                 const data = await response.json();
                 setRecipes(data);
@@ -48,10 +50,6 @@ function HomePage() {
 
     const handleProfileClick = () => {
         navigate('/profile');
-    };
-
-    const handleRecipeClick = () => {
-        navigate('/recipelist');
     };
 
     const handleLoginClick = () => {
@@ -70,26 +68,29 @@ function HomePage() {
     };
 
     const filteredRecipes = recipes.filter(recipe =>
-        recipe.recipeName.toLowerCase().includes(searchTerm.toLowerCase())
+        recipe.recipeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        recipe.category.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleViewFullRecipe = (recipe) => {
-        setSelectedRecipe(recipe === selectedRecipe ? null : recipe);
+        if (isLoggedIn) {
+            setSelectedRecipe(recipe === selectedRecipe ? null : recipe);
+        } else {
+            alert('Please log in or register to view the full recipe details.');
+        }
     };
 
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             {/* Navbar */}
             <nav style={{ backgroundColor: '#004aad', padding: '10px', color: 'white', display: 'flex', justifyContent: 'space-around' }}>
-                <button onClick={() => navigate('/')} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Home</button>
-                <button onClick={handleProfileClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Profile</button>
-                <button onClick={handleRecipeClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Recipes</button>
+                <Button onClick={handleProfileClick} label="Profile" style={{ background: 'none', color: 'white' }} />
                 {isLoggedIn ? (
-                    <button onClick={handleLogoutClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Logout</button>
+                    <Button onClick={handleLogoutClick} label="Logout" style={{ background: 'none', color: 'white' }} />
                 ) : (
                     <div>
-                        <button onClick={handleLoginClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Login</button>
-                        <button onClick={handleRegisterClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Register</button>
+                        <Button onClick={handleLoginClick} label="Login" style={{ background: 'none', color: 'white' }} />
+                        <Button onClick={handleRegisterClick} label="Register" style={{ background: 'none', color: 'white' }} />
                     </div>
                 )}
             </nav>
@@ -105,19 +106,29 @@ function HomePage() {
                 <div>
                     <p>
                         Please{' '}
-                        <button
+                        <Button
                             onClick={handleLoginClick}
-                            style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer' }}
-                        >
-                            log in
-                        </button>{' '}
+                            label="log in"
+                            style={{
+                                color: 'blue',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                textDecoration: 'underline'
+                            }}
+                        />{' '}
                         or{' '}
-                        <button
+                        <Button
                             onClick={handleRegisterClick}
-                            style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer' }}
-                        >
-                            register
-                        </button>{' '}
+                            label="register"
+                            style={{
+                                color: 'blue',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer',
+                                textDecoration: 'underline'
+                            }}
+                        />{' '}
                         to access more features.
                     </p>
                 </div>
@@ -126,7 +137,7 @@ function HomePage() {
                 <h2>Search and Browse Recipes</h2>
                 <input
                     type="text"
-                    placeholder="Search for a recipe..."
+                    placeholder="Search by name or category..."
                     value={searchTerm}
                     onChange={(e) => setSearchTerm(e.target.value)}
                     style={{
@@ -148,71 +159,13 @@ function HomePage() {
                         gap: '20px'
                     }}>
                         {filteredRecipes.map(recipe => (
-                            (selectedRecipe === null || selectedRecipe === recipe) && (
-                                <div key={recipe.id} style={{
-                                    border: '1px solid #ddd',
-                                    borderRadius: '10px',
-                                    padding: '15px',
-                                    boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
-                                    textAlign: 'left',
-                                    position: 'relative'
-                                }}>
-                                  <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
-    <img
-        src={recipe.imageUrl}
-        alt={recipe.recipeName}
-        style={{
-            width: selectedRecipe === recipe ? '250px' : '100%',
-            height: selectedRecipe === recipe ? '200px' : '250px',
-            objectFit: 'cover',
-            borderRadius: selectedRecipe === recipe ? '50%' : '10px'
-        }}
-    />
-</div>
-
-                                    <h2 style={{
-                                        margin: '15px 0',
-                                        fontSize: '1.5em',
-                                        textAlign: 'center'
-                                    }}>{recipe.recipeName}</h2>
-                                    <button
-                                        onClick={() => handleViewFullRecipe(recipe)}
-                                        style={{
-                                            display: 'block',
-                                            margin: '10px auto',
-                                            padding: '10px',
-                                            backgroundColor: '#004aad',
-                                            color: 'white',
-                                            border: 'none',
-                                            borderRadius: '5px',
-                                            cursor: 'pointer'
-                                        }}
-                                    >
-                                        {selectedRecipe === recipe ? 'Hide Details' : 'View Full Recipe'}
-                                    </button>
-
-                                    {/* Displaying recipe details if recipe is selected */}
-                                    {selectedRecipe === recipe && (
-                                        <div style={{
-                                            marginTop: '20px',
-                                            textAlign: 'left',
-                                            borderTop: '1px solid #ddd',
-                                            paddingTop: '20px'
-                                        }}>
-                                            <h2>Recipe Details</h2>
-                                            <p><strong>Ingredients:</strong> {recipe.ingredients}</p>
-                                            <p><strong>Instructions:</strong> {recipe.instructions}</p>
-                                            <p><strong>Category:</strong> {recipe.category}</p>
-                                            <p><strong>Preparation Time:</strong> {recipe.preparation}</p>
-                                            <p><strong>Cooking Time:</strong> {recipe.cookingTime}</p>
-                                            <p><strong>Servings:</strong> {recipe.servings}</p>
-                                            <button onClick={() => setSelectedRecipe(null)} style={{ marginTop: '20px', backgroundColor: '#ff4d4d', color: 'white' }}>
-                                                Close Details
-                                            </button>
-                                        </div>
-                                    )}
-                                </div>
-                            )
+                            <RecipeCard
+                                key={recipe.id}
+                                recipe={recipe}
+                                isSelected={selectedRecipe === recipe}
+                                onViewRecipe={handleViewFullRecipe}
+                                isLoggedIn={isLoggedIn}
+                            />
                         ))}
                     </div>
                 )}
