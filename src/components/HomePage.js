@@ -79,6 +79,22 @@ function HomePage() {
 
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
+            {/* Navbar */}
+            <nav style={{ backgroundColor: '#004aad', padding: '10px', color: 'white', display: 'flex', justifyContent: 'space-around' }}>
+                <button onClick={() => navigate('/')} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Home</button>
+                <button onClick={handleProfileClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Profile</button>
+                <button onClick={handleRecipeClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Recipes</button>
+                {isLoggedIn ? (
+                    <button onClick={handleLogoutClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Logout</button>
+                ) : (
+                    <div>
+                        <button onClick={handleLoginClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Login</button>
+                        <button onClick={handleRegisterClick} style={{ color: 'white', background: 'none', border: 'none', cursor: 'pointer' }}>Register</button>
+                    </div>
+                )}
+            </nav>
+
+            {/* Page Content */}
             <h1>Welcome to the Recipe App</h1>
             {isLoggedIn ? (
                 <div>

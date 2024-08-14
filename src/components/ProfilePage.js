@@ -1,39 +1,13 @@
 import React, { useState, useEffect } from 'react';
-
+import '../styles/ProfilePage.css';
 
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null;
 
     return (
-        <div style={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0, 0, 0, 0.5)',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            zIndex: 1000
-        }}>
-            <div style={{
-                backgroundColor: 'white',
-                padding: '20px',
-                borderRadius: '5px',
-                position: 'relative',
-                width: '80%',
-                maxWidth: '500px'
-            }}>
-                <button onClick={onClose} style={{
-                    position: 'absolute',
-                    top: '10px',
-                    right: '10px',
-                    background: 'none',
-                    border: 'none',
-                    fontSize: '16px',
-                    cursor: 'pointer'
-                }}>X</button>
+        <div className="modal">
+            <div className="modal-content">
+                <button onClick={onClose} className="modal-close-button">X</button>
                 {children}
             </div>
         </div>
@@ -184,18 +158,17 @@ function ProfilePage() {
     };
 
     return (
-        <div>
-            <h2>Profile Page</h2>
-            <div>
+        <div className="profile-page">
+            <div className="profile-picture">
                 <img src={userData.profilePicture || 'default-profile-pic-url'} alt="Profile" width="100" height="100" />
             </div>
-            <div>
+            <div className="profile-content">
                 <p><strong>Username:</strong> {userData.username}</p>
                 <p><strong>Name:</strong> {userData.name}</p>
                 <p><strong>Surname:</strong> {userData.surname}</p>
                 <p><strong>Email:</strong> {userData.email}</p>
-                <button onClick={() => setIsEditing(true)}>Update Profile</button>
-                <button onClick={handleDeleteProfile} style={{ color: 'red' }}>Delete Profile</button>
+                <button onClick={() => setIsEditing(true)} className="button">Update Profile</button>
+                <button onClick={handleDeleteProfile} className="button delete-button">Delete Profile</button>
             </div>
 
             {/* Modal for updating profile */}
@@ -229,7 +202,7 @@ function ProfilePage() {
                     <label>Profile Picture:</label>
                     <input type="file" onChange={handleProfilePictureChange} />
                 </div>
-                <button onClick={handleUpdateProfile}>Save Changes</button>
+                <button onClick={handleUpdateProfile} className="button">Save Changes</button>
 
                 <h3>Change Password</h3>
                 <div>
@@ -248,7 +221,7 @@ function ProfilePage() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
-                <button onClick={handleUpdatePassword}>Change Password</button>
+                <button onClick={handleUpdatePassword} className="button">Change Password</button>
             </Modal>
         </div>
     );
