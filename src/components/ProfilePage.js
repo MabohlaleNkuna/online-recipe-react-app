@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import '../styles/ProfilePage.css';
 
@@ -34,6 +35,7 @@ function ProfilePage() {
     });
     const [newPassword, setNewPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchUserData = async () => {
@@ -158,10 +160,14 @@ function ProfilePage() {
         }
     };
 
+    const handleNavigateToRecipeList = () => {
+        navigate('/recipelist');
+    };
+
     return (
         <div className="profile-page">
             <div className="profile-picture">
-                <img src={userData.profilePicture || 'default-profile-pic-url'} alt="Profile" width="100" height="100" />
+                <img src={userData.profilePicture || 'default-profile-pic-url'} alt="Profile" />
             </div>
             <div className="profile-content">
                 <p><strong>Username:</strong> {userData.username}</p>
@@ -178,6 +184,16 @@ function ProfilePage() {
                     label="Delete Profile" 
                     color="#FF0000" 
                 />
+                <div className="update-recipes">
+                    <p>
+                        To update or add new recipes,{' '}
+                        <button 
+                            onClick={handleNavigateToRecipeList} 
+                        >
+                            click here
+                        </button>.
+                    </p>
+                </div>
             </div>
 
             {/* Modal for updating profile */}
@@ -209,15 +225,12 @@ function ProfilePage() {
                 </div>
                 <div>
                     <label>Profile Picture:</label>
-                    <input type="file" onChange={handleProfilePictureChange} />
+                    <input
+                        type="file"
+                        accept="image/*"
+                        onChange={handleProfilePictureChange}
+                    />
                 </div>
-                <Button 
-                    onClick={handleUpdateProfile} 
-                    label="Save Changes" 
-                    color="#004AAD" 
-                />
-
-                <h3>Change Password</h3>
                 <div>
                     <label>New Password:</label>
                     <input
@@ -235,8 +248,8 @@ function ProfilePage() {
                     />
                 </div>
                 <Button 
-                    onClick={handleUpdatePassword} 
-                    label="Change Password" 
+                    onClick={handleUpdateProfile} 
+                    label="Save Changes" 
                     color="#004AAD" 
                 />
             </Modal>

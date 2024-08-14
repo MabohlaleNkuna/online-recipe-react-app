@@ -1,30 +1,70 @@
 .profile-page {
     display: flex;
-    align-items: flex-start;
-    padding: 20px;
+    height: 100vh;
+    max-width: 1200px;
+    margin: auto;
+    background-color: #F9F9F9;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .profile-picture {
-    flex: 1;
-    max-width: 150px;
-    margin-right: 20px;
+    width: 40%;
+    height: 60vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #e0e0e0;
+    overflow: hidden;
+}
+
+.profile-picture img {
+    width: auto;
+    height: 100%;
+    object-fit: cover;
 }
 
 .profile-content {
-    flex: 2;
+    width: 50%;
+    height: 100vh;
+    padding: 20px;
+    overflow-y: auto;
 }
 
 .profile-content p {
-    margin: 0;
-    padding: 5px 0;
+    margin: 10px 0;
+    font-size: 16px;
+    line-height: 1.5;
 }
 
-.button {
-    margin-top: 10px;
+.button, .delete-button {
+    display: block;
+    width: 200px;
+    margin: 10px auto;
 }
 
 .delete-button {
-    color: red;
+    background-color: #FF0000;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.button {
+    background-color: #004AAD;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.button:hover {
+    background-color: #003a8c;
+}
+
+.delete-button:hover {
+    background-color: #cc0000;
 }
 
 .modal {
@@ -42,19 +82,52 @@
 
 .modal-content {
     background-color: white;
-    padding: 20px;
-    border-radius: 5px;
+    padding: 30px;
+    border-radius: 10px;
     position: relative;
-    width: 80%;
-    max-width: 500px;
+    width: 90%;
+    max-width: 600px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
 }
 
 .modal-close-button {
     position: absolute;
-    top: 10px;
-    right: 10px;
+    top: 15px;
+    right: 15px;
     background: none;
     border: none;
-    font-size: 16px;
+    font-size: 20px;
     cursor: pointer;
+    color: #004AAD;
+}
+
+.update-recipes {
+    margin-top: 20px;
+    font-size: 16px;
+}
+
+.update-recipes button {
+    background: none;
+    color: #004AAD;
+    border: none;
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+@media (max-width: 768px) {
+    .profile-page {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .profile-picture {
+        width: 100%;
+        height: auto;
+    }
+
+    .profile-content {
+        width: 100%;
+        height: auto;
+        padding: 10px;
+    }
 }
