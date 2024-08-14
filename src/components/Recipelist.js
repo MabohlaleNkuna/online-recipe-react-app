@@ -39,11 +39,12 @@ const RecipeList = () => {
         recipeName: '',
         ingredients: '',
         instructions: '',
-        category: '', 
+        category: 'Breakfast',
         preparation: '',
         time: '',
         cookingTime: '',
         servings: '',
+        imageUrl: '',  
     });
     const [editRecipeId, setEditRecipeId] = useState(null);
     const [editRecipe, setEditRecipe] = useState({});
@@ -53,7 +54,6 @@ const RecipeList = () => {
         const getRecipes = async () => {
             try {
                 const data = await fetchRecipes();
-                // Filtering out recipes with empty fields
                 const filteredData = data.filter(recipe =>
                     recipe.recipeName.trim() !== '' &&
                     recipe.ingredients.trim() !== '' &&
@@ -98,11 +98,12 @@ const RecipeList = () => {
                 recipeName: '',
                 ingredients: '',
                 instructions: '',
-                category: 'Breakfast', 
+                category: 'Breakfast',
                 preparation: '',
                 time: '',
                 cookingTime: '',
                 servings: '',
+                imageUrl: '', 
             });
         } catch (error) {
             console.error('Error adding recipe:', error);
@@ -139,7 +140,6 @@ const RecipeList = () => {
         setSearchQuery(e.target.value); 
     };
 
-    // search recipes based on the search query
     const filteredRecipes = recipes.filter(recipe =>
         recipe.recipeName.toLowerCase().includes(searchQuery.toLowerCase()) ||
         recipe.category.toLowerCase().includes(searchQuery.toLowerCase())
@@ -212,6 +212,13 @@ const RecipeList = () => {
                             value={newRecipe.servings}
                             onChange={handleChange}
                         />
+                        <input
+                            type="text"
+                            name="imageUrl"
+                            placeholder="Image URL"
+                            value={newRecipe.imageUrl}
+                            onChange={handleChange}
+                        />
                         <button type="submit">Add Recipe</button>
                     </form>
                 </section>
@@ -276,6 +283,13 @@ const RecipeList = () => {
                                 value={editRecipe.servings || ''}
                                 onChange={handleChange}
                             />
+                            <input
+                                type="text"
+                                name="imageUrl"
+                                placeholder="Image URL"
+                                value={editRecipe.imageUrl || ''}
+                                onChange={handleChange}
+                            />
                             <button type="submit">Update Recipe</button>
                         </form>
                     )}
@@ -284,6 +298,7 @@ const RecipeList = () => {
                     <table>
                         <thead>
                             <tr>
+                                <th>Image</th>
                                 <th>Recipe Name</th>
                                 <th>Ingredients</th>
                                 <th>Instructions</th>
@@ -298,6 +313,15 @@ const RecipeList = () => {
                         <tbody>
                             {filteredRecipes.map((recipe) => (
                                 <tr key={recipe.id}>
+                                    <td>
+                                        {recipe.imageUrl && (
+                                            <img
+                                                src={recipe.imageUrl}
+                                                alt={recipe.recipeName}
+                                                style={{ width: '100px', height: '100px' }}
+                                            />
+                                        )}
+                                    </td>
                                     <td>{recipe.recipeName}</td>
                                     <td>{recipe.ingredients}</td>
                                     <td>{recipe.instructions}</td>

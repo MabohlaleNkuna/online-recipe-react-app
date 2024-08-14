@@ -1,5 +1,45 @@
 import React, { useState, useEffect } from 'react';
 
+
+function Modal({ isOpen, onClose, children }) {
+    if (!isOpen) return null;
+
+    return (
+        <div style={{
+            position: 'fixed',
+            top: 0,
+            left: 0,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0, 0, 0, 0.5)',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            zIndex: 1000
+        }}>
+            <div style={{
+                backgroundColor: 'white',
+                padding: '20px',
+                borderRadius: '5px',
+                position: 'relative',
+                width: '80%',
+                maxWidth: '500px'
+            }}>
+                <button onClick={onClose} style={{
+                    position: 'absolute',
+                    top: '10px',
+                    right: '10px',
+                    background: 'none',
+                    border: 'none',
+                    fontSize: '16px',
+                    cursor: 'pointer'
+                }}>X</button>
+                {children}
+            </div>
+        </div>
+    );
+}
+
 function ProfilePage() {
     const [userData, setUserData] = useState({
         name: '',
@@ -59,7 +99,7 @@ function ProfilePage() {
                     body: JSON.stringify({
                         ...userData,
                         ...newData,
-                        password: newPassword || userData.password, // Keep old password if not changing
+                        password: newPassword || userData.password, 
                     }),
                 });
                 if (response.ok) {
@@ -158,59 +198,58 @@ function ProfilePage() {
                 <button onClick={handleDeleteProfile} style={{ color: 'red' }}>Delete Profile</button>
             </div>
 
-            {isEditing && (
+            {/* Modal for updating profile */}
+            <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
+                <h3>Update Profile</h3>
                 <div>
-                    <h3>Update Profile</h3>
-                    <div>
-                        <label>Name:</label>
-                        <input
-                            type="text"
-                            value={newData.name}
-                            onChange={(e) => setNewData({ ...newData, name: e.target.value })}
-                        />
-                    </div>
-                    <div>
-                        <label>Surname:</label>
-                        <input
-                            type="text"
-                            value={newData.surname}
-                            onChange={(e) => setNewData({ ...newData, surname: e.target.value })}
-                        />
-                    </div>
-                    <div>
-                        <label>Email:</label>
-                        <input
-                            type="email"
-                            value={newData.email}
-                            onChange={(e) => setNewData({ ...newData, email: e.target.value })}
-                        />
-                    </div>
-                    <div>
-                        <label>Profile Picture:</label>
-                        <input type="file" onChange={handleProfilePictureChange} />
-                    </div>
-                    <button onClick={handleUpdateProfile}>Save Changes</button>
-
-                    <h3>Change Password</h3>
-                    <div>
-                        <label>New Password:</label>
-                        <input
-                            type="password"
-                            value={newPassword}
-                            onChange={(e) => setNewPassword(e.target.value)}
-                        />
-                    </div>
-                    <div>
-                        <label>Confirm Password:</label>
-                        <input
-                            type="password"
-                            value={confirmPassword}
-                            onChange={(e) => setConfirmPassword(e.target.value)}
-                        />
-                    </div>
-                    <button onClick={handleUpdatePassword}>Change Password</button>
+                    <label>Name:</label>
+                    <input
+                        type="text"
+                        value={newData.name}
+                        onChange={(e) => setNewData({ ...newData, name: e.target.value })}
+                    />
                 </div>
-            )}
+                <div>
+                    <label>Surname:</label>
+                    <input
+                        type="text"
+                        value={newData.surname}
+                        onChange={(e) => setNewData({ ...newData, surname: e.target.value })}
+                    />
+                </div>
+                <div>
+                    <label>Email:</label>
+                    <input
+                        type="email"
+                        value={newData.email}
+                        onChange={(e) => setNewData({ ...newData, email: e.target.value })}
+                    />
+                </div>
+                <div>
+                    <label>Profile Picture:</label>
+                    <input type="file" onChange={handleProfilePictureChange} />
+                </div>
+                <button onClick={handleUpdateProfile}>Save Changes</button>
+
+                <h3>Change Password</h3>
+                <div>
+                    <label>New Password:</label>
+                    <input
+                        type="password"
+                        value={newPassword}
+                        onChange={(e) => setNewPassword(e.target.value)}
+                    />
+                </div>
+                <div>
+                    <label>Confirm Password:</label>
+                    <input
+                        type="password"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                    />
+                </div>
+                <button onClick={handleUpdatePassword}>Change Password</button>
+            </Modal>
         </div>
     );
 }
