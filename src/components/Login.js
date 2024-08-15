@@ -18,11 +18,10 @@ const Login = () => {
         e.preventDefault();
 
         try {
-            // Replace with actual API call if needed
-            const response = await fetch('http://localhost:3000/users?username=' + encodeURIComponent(username) + '&password=' + encodeURIComponent(password));
+            const response = await fetch(`http://localhost:3000/users?username=${encodeURIComponent(username)}`);
             const data = await response.json();
 
-            if (data.length > 0) {
+            if (data.length > 0 && data[0].password === password) {
                 localStorage.setItem('userId', data[0].id); // Store user ID
                 localStorage.setItem('username', username); // Optionally store username
                 navigate('/'); // Redirect to home on successful login

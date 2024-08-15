@@ -1,6 +1,11 @@
 import React from 'react';
 
 function RecipeCard({ recipe, isSelected, onViewRecipe, isLoggedIn }) {
+    // Check if the recipe has necessary details
+    if (!recipe || !recipe.recipeName || !recipe.ingredients || !recipe.instructions) {
+        return null;
+    }
+
     return (
         <div style={{
             border: '1px solid #ddd',
