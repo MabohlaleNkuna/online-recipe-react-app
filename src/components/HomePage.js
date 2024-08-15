@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecipeCard from './RecipeCard';
 import Button from './Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faUser } from '@fortawesome/free-solid-svg-icons';
 
 function HomePage() {
     const [userData, setUserData] = useState(null);
@@ -52,21 +54,6 @@ function HomePage() {
         navigate('/profile');
     };
 
-    const handleLoginClick = () => {
-        navigate('/login');
-    };
-
-    const handleRegisterClick = () => {
-        navigate('/registration');
-    };
-
-    const handleLogoutClick = () => {
-        localStorage.removeItem('userId');
-        setIsLoggedIn(false);
-        setUserData(null);
-        navigate('/');
-    };
-
     const filteredRecipes = recipes.filter(recipe =>
         recipe.recipeName.toLowerCase().includes(searchTerm.toLowerCase()) ||
         recipe.category.toLowerCase().includes(searchTerm.toLowerCase())
@@ -81,19 +68,31 @@ function HomePage() {
     };
 
     return (
-        <div style={{ textAlign: 'center', padding: '20px' }}>
+        <div style={{ textAlign: 'center', padding: '20px', position: 'relative' }}>
             {/* Navbar */}
-            <nav style={{ backgroundColor: '#004aad', padding: '10px', color: 'white', display: 'flex', justifyContent: 'space-around' }}>
-                <Button onClick={handleProfileClick} label="Profile" style={{ background: 'none', color: 'white' }} />
-                {isLoggedIn ? (
-                    <Button onClick={handleLogoutClick} label="Logout" style={{ background: 'none', color: 'white' }} />
-                ) : (
-                    <div>
-                        <Button onClick={handleLoginClick} label="Login" style={{ background: 'none', color: 'white' }} />
-                        <Button onClick={handleRegisterClick} label="Register" style={{ background: 'none', color: 'white' }} />
-                    </div>
-                )}
-            </nav>
+            {isLoggedIn && (
+                <nav style={{ padding: '10px', display: 'flex', justifyContent: 'space-around' }}>
+                    {/* Removed Logout Button */}
+                </nav>
+            )}
+
+            {/* Profile Icon */}
+            {isLoggedIn && (
+                <FontAwesomeIcon
+                    icon={faUser}
+                    onClick={handleProfileClick}
+                    style={{
+                        position: 'fixed',
+                        top: '20px',
+                        right: '20px',
+                        cursor: 'pointer',
+                        fontSize: '30px',
+                        color: '#004aad',
+                        zIndex: 1000, // Ensure it is on top
+                        pointerEvents: 'auto' // Ensure clicks are registered
+                    }}
+                />
+            )}
 
             {/* Page Content */}
             <h1>Welcome to the Recipe App</h1>
@@ -107,7 +106,7 @@ function HomePage() {
                     <p>
                         Please{' '}
                         <Button
-                            onClick={handleLoginClick}
+                            onClick={() => navigate('/login')}
                             label="log in"
                             style={{
                                 color: 'blue',
@@ -119,7 +118,7 @@ function HomePage() {
                         />{' '}
                         or{' '}
                         <Button
-                            onClick={handleRegisterClick}
+                            onClick={() => navigate('/registration')}
                             label="register"
                             style={{
                                 color: 'blue',

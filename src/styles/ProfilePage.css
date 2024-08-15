@@ -131,3 +131,18 @@
         padding: 10px;
     }
 }
+.logout-button {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    background-color: blue;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.logout-button:hover {
+    background-color: darkblue;
+}

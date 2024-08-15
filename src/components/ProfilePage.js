@@ -160,6 +160,14 @@ function ProfilePage() {
         }
     };
 
+    const handleLogout = () => {
+        // Remove user from localStorage
+        localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        // Redirect to HomePage
+        navigate('/');
+    };
+
     const handleNavigateToRecipeList = () => {
         navigate('/recipelist');
     };
@@ -184,6 +192,12 @@ function ProfilePage() {
                     label="Delete Profile" 
                     color="#FF0000" 
                 />
+                <button 
+                    onClick={handleLogout} 
+                    className="logout-button"
+                >
+                    Logout
+                </button>
                 <div className="update-recipes">
                     <p>
                         To update or add new recipes,{' '}

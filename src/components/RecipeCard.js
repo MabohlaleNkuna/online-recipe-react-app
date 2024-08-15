@@ -9,7 +9,7 @@ function RecipeCard({ recipe, isSelected, onViewRecipe, isLoggedIn }) {
             boxShadow: '0 2px 5px rgba(0, 0, 0, 0.1)',
             textAlign: 'left',
             position: 'relative',
-            display: isSelected || !isSelected ? 'block' : 'none'
+            display: 'block'
         }}>
             <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', margin: '0 auto' }}>
                 <img
@@ -41,7 +41,9 @@ function RecipeCard({ recipe, isSelected, onViewRecipe, isLoggedIn }) {
                     cursor: 'pointer'
                 }}
             >
-                {isSelected ? 'Hide Details' : 'View Full Recipe'}
+                {isLoggedIn
+                    ? (isSelected ? 'Hide Details' : 'View Full Recipe')
+                    : 'Sign in to view details'}
             </button>
             {isSelected && isLoggedIn && (
                 <div style={{
@@ -69,7 +71,9 @@ function RecipeCard({ recipe, isSelected, onViewRecipe, isLoggedIn }) {
                     borderTop: '1px solid #ddd',
                     paddingTop: '20px'
                 }}>
-                    <p>Please <button onClick={() => onViewRecipe(null)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer' }}>log in</button> or <button onClick={() => onViewRecipe(null)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer' }}>register</button> to view full recipe details.</p>
+                    <p>
+                        Please <button onClick={() => onViewRecipe(null)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer' }}>log in</button> or <button onClick={() => onViewRecipe(null)} style={{ color: 'blue', border: 'none', background: 'none', cursor: 'pointer' }}>register</button> to view full recipe details.
+                    </p>
                 </div>
             )}
         </div>

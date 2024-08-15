@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom';
 import Navbar from './components/Navbar'; 
 import Registration from './components/Registration';
 import Login from './components/Login';
@@ -14,16 +14,30 @@ function App() {
         <Router>
             <div>
                 <Routes>
-                    <Route path="/" element={<HomePage />} /> 
-                    <Route path="/registration" element={<Registration />} /> 
-                    <Route path="/login" element={<Login />} />
+                    <Route path="/" element={<HomePage />} />
+                    <Route 
+                        path="/registration" 
+                        element={
+                            loggedInUser ? <Navigate to="/profile" /> : <Registration />
+                        }
+                    />
+                    <Route 
+                        path="/login" 
+                        element={
+                            loggedInUser ? <Navigate to="/profile" /> : <Login />
+                        }
+                    />
                     <Route 
                         path="/recipelist" 
-                        element={loggedInUser ? <Recipelist /> : <Navigate to="/login" />} 
+                        element={
+                            loggedInUser ? <Recipelist /> : <Navigate to="/login" />
+                        }
                     />
                     <Route 
                         path="/profile" 
-                        element={loggedInUser ? <ProfilePage /> : <Navigate to="/login" />} 
+                        element={
+                            loggedInUser ? <ProfilePage /> : <Navigate to="/login" />
+                        }
                     />
                     {/* Redirect to HomePage if no other route matches */}
                     <Route path="*" element={<Navigate to="/" />} />
