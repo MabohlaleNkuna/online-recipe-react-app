@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecipeCard from './RecipeCard';
 import Button from './Button';
+import SearchBar from './SearchBar'; // Import the SearchBar component
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -69,14 +70,11 @@ function HomePage() {
 
     return (
         <div style={{ textAlign: 'center', padding: '20px', position: 'relative' }}>
-          
             {isLoggedIn && (
                 <nav style={{ padding: '10px', display: 'flex', justifyContent: 'space-around' }}>
-                  
                 </nav>
             )}
 
-            
             {isLoggedIn && (
                 <FontAwesomeIcon
                     icon={faUser}
@@ -94,7 +92,6 @@ function HomePage() {
                 />
             )}
 
-            
             <h1>Welcome to the Recipe App</h1>
             {isLoggedIn ? (
                 <div>
@@ -134,18 +131,9 @@ function HomePage() {
             )}
             <div style={{ marginTop: '40px' }}>
                 <h2>Search and Browse Recipes</h2>
-                <input
-                    type="text"
-                    placeholder="Search by name or category..."
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    style={{
-                        padding: '10px',
-                        marginBottom: '20px',
-                        width: '100%',
-                        borderRadius: '5px',
-                        border: '1px solid #ccc'
-                    }}
+                <SearchBar
+                    searchQuery={searchTerm}
+                    handleSearchChange={(e) => setSearchTerm(e.target.value)} // Update this to use SearchBar's props
                 />
                 {isPending ? (
                     <p>Loading recipes...</p>

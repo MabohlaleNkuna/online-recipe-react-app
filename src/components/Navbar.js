@@ -1,57 +1,77 @@
-import React from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
-function Navbar() {
-    const navigate = useNavigate();
-    const location = useLocation();
-    const userId = localStorage.getItem('userId');
+class Navbar extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            userId: localStorage.getItem('userId'),
+            location: window.location.pathname
+        };
+    }
 
-    const handleLogout = () => {
+    handleLogout = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
-        navigate('/login');
+        this.props.history.push('/login');
     };
 
-    const isRecipeListPage = location.pathname === '/recipelist';
+    componentDidMount() {
+        this.setState({ location: window.location.pathname });
+        window.addEventListener('popstate', this.handleLocationChange);
+    }
 
-    return (
-        <nav style={styles.navbar}>
-            <ul style={styles.navList}>
-                <li style={styles.navItem}>
-                    <Link to="/" style={styles.navLink}>
-                        <FontAwesomeIcon icon={faHome} style={styles.icon} />
-                    </Link>
-                </li>
-                {userId && !isRecipeListPage && (
-                    <>
-                        <li style={styles.navItem}>
-                            <Link to="/recipelist" style={styles.navLink}>Recipe List</Link>
-                        </li>
-                        <li style={styles.navItem}>
-                            <Link to="/profile" style={styles.navLink}>Profile</Link>
-                        </li>
-                        <li style={styles.navItem}>
-                            <button onClick={handleLogout} style={{ ...styles.navLink, ...styles.logoutButton }}>
-                                Logout
-                            </button>
-                        </li>
-                    </>
-                )}
-                {!userId && (
-                    <>
-                        <li style={styles.navItem}>
-                            <Link to="/login" style={styles.navLink}>Login</Link>
-                        </li>
-                        <li style={styles.navItem}>
-                            <Link to="/registration" style={styles.navLink}>Register</Link>
-                        </li>
-                    </>
-                )}
-            </ul>
-        </nav>
-    );
+    componentWillUnmount() {
+        window.removeEventListener('popstate', this.handleLocationChange);
+    }
+
+    handleLocationChange = () => {
+        this.setState({ location: window.location.pathname });
+    };
+
+    render() {
+        const { userId, location } = this.state;
+        const isRecipeListPage = location === '/recipelist';
+
+        return (
+            <nav style={styles.navbar}>
+                <ul style={styles.navList}>
+                    <li style={styles.navItem}>
+                        <Link to="/" style={styles.navLink}>
+                            <FontAwesomeIcon icon={faHome} style={styles.icon} />
+                        </Link>
+                    </li>
+                    {userId && !isRecipeListPage && (
+                        <>
+                            <li style={styles.navItem}>
+                                <Link to="/recipelist" style={styles.navLink}>Recipe List</Link>
+                            </li>
+                            <li style={styles.navItem}>
+                                <Link to="/profile" style={styles.navLink}>Profile</Link>
+                            </li>
+                            <li style={styles.navItem}>
+                                <button onClick={this.handleLogout} style={{ ...styles.navLink, ...styles.logoutButton }}>
+                                    Logout
+                                </button>
+                            </li>
+                        </>
+                    )}
+                    {!userId && (
+                        <>
+                            <li style={styles.navItem}>
+                                <Link to="/login" style={styles.navLink}>Login</Link>
+                            </li>
+                            <li style={styles.navItem}>
+                                <Link to="/registration" style={styles.navLink}>Register</Link>
+                            </li>
+                        </>
+                    )}
+                </ul>
+            </nav>
+        );
+    }
 }
 
 const styles = {
