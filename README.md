@@ -1,70 +1,99 @@
-# Getting Started with Create React App
+# Recipe App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+This Recipe App allows users to register, log in, browse, search, and manage recipes. The app supports CRUD (Create, Read, Update, Delete) operations for recipes and provides personalized user experiences, such as viewing a profile and saving favorite recipes.
 
-## Available Scripts
+## Table of Contents
+- [Features](#features)
+- [Getting Started](#getting-started)
+- [Dependencies](#dependencies)
+- [Installation](#installation)
+- [Usage](#usage)
+- [Components](#components)
+- [API](#api)
+- [Styling](#styling)
+- [Contributing](#contributing)
+- [License](#license)
 
-In the project directory, you can run:
+## Features
+- User registration and login
+- CRUD operations for recipes
+- Profile management
+- Search functionality to filter recipes by name or category
+- Responsive design
 
-### `npm start`
+## Getting Started
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Prerequisites
+- Node.js (v14+)
+- npm (v6+)
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## Dependencies
+- React (v18+)
+- React Router DOM (v6+)
+- FontAwesome (for icons)
+- json-server (for mock backend)
 
-### `npm test`
+## Installation
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Create the repository:**
+  on terminal ,run the following
+  npx create-react-app online-recipe-app
+  cd online-recipe-app
 
-### `npm run build`
+**Install dependencies:**
+npm install -g json-server
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+**Set up json-server for the mock backend:**
+npm install -g json-server
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+**Run the mock server:**
+json-server --watch db.json --port 3000
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+**Start the React app:**
+npm start
 
-### `npm run eject`
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## Usage
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Home Page: Displays a welcome message and allows users to search and browse recipes.
+Recipe List: Shows all recipes, with options to add, edit, or delete recipes.
+Registration: Allows new users to sign up.
+Login: Allows existing users to log in.
+Profile Page: Displays the user's profile and favorite recipes.
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Components
+**App.js**
+The main component that manages routes and renders different pages based on user authentication.
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+**HomePage.js**
+Manages the homepage layout, including search functionality and recipe browsing.
+Uses useEffect to fetch user data and recipes from db.json.
 
-## Learn More
+**RecipeList.js**
+Displays a list of recipes with options to add, edit, or delete recipes.
+Implements CRUD operations using fetch.
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+**Navbar.js**
+A navigation bar component included on pages where users are logged in.
+Button.js
+A reusable button component used across different pages for actions like login, register, etc.
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+**RecipeCard.js**
+Displays individual recipe details and supports viewing full recipe details upon login.
 
-### Code Splitting
+## API
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+The app uses json-server to mock a REST API, which is defined in db.json.
 
-### Analyzing the Bundle Size
+**GET /Recipe**: Fetches all recipes.
+**POST /Recipe**: Adds a new recipe.
+**PUT /Recipe/**: Updates a recipe by ID.
+**DELETE /Recipe/**: Deletes a recipe by ID.
+**GET /users/**: Fetches user data by ID.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## Styling
 
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+The app uses inline styles and a Recipelist.css file to style components. The color scheme includes:
+ Blue
+Yellow
+white

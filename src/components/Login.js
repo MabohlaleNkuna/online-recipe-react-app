@@ -10,7 +10,7 @@ const Login = () => {
         // Check if user is already logged in on component mount
         const userId = localStorage.getItem('userId');
         if (userId) {
-            navigate('/'); // Redirect to home if already logged in
+            navigate('/'); 
         }
     }, [navigate]);
 
@@ -22,9 +22,9 @@ const Login = () => {
             const data = await response.json();
 
             if (data.length > 0 && data[0].password === password) {
-                localStorage.setItem('userId', data[0].id); // Store user ID
-                localStorage.setItem('username', username); // Optionally store username
-                navigate('/'); // Redirect to home on successful login
+                localStorage.setItem('userId', data[0].id); 
+                localStorage.setItem('username', username); 
+                navigate('/');
             } else {
                 alert('Invalid credentials');
             }

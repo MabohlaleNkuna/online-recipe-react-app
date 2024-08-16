@@ -69,14 +69,14 @@ function HomePage() {
 
     return (
         <div style={{ textAlign: 'center', padding: '20px', position: 'relative' }}>
-            {/* Navbar */}
+          
             {isLoggedIn && (
                 <nav style={{ padding: '10px', display: 'flex', justifyContent: 'space-around' }}>
-                    {/* Removed Logout Button */}
+                  
                 </nav>
             )}
 
-            {/* Profile Icon */}
+            
             {isLoggedIn && (
                 <FontAwesomeIcon
                     icon={faUser}
@@ -88,13 +88,13 @@ function HomePage() {
                         cursor: 'pointer',
                         fontSize: '30px',
                         color: '#004aad',
-                        zIndex: 1000, // Ensure it is on top
-                        pointerEvents: 'auto' // Ensure clicks are registered
+                        zIndex: 1000, 
+                        pointerEvents: 'auto' 
                     }}
                 />
             )}
 
-            {/* Page Content */}
+            
             <h1>Welcome to the Recipe App</h1>
             {isLoggedIn ? (
                 <div>
