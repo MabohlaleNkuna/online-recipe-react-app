@@ -124,6 +124,13 @@ const RecipeList = () => {
     const handleEditRecipe = (recipe) => {
         setEditRecipeId(recipe.id);
         setEditRecipe(recipe);
+        // Scroll to the update form
+        setTimeout(() => {
+            const updateForm = document.getElementById('update-form');
+            if (updateForm) {
+                updateForm.scrollIntoView({ behavior: 'smooth' });
+            }
+        }, 0);
     };
 
     const handleUpdateRecipe = async (e) => {
@@ -148,7 +155,7 @@ const RecipeList = () => {
     );
 
     return (
-        <>
+        <div style={styles.container}>
             <div style={styles.navbarContainer}>
                 <Navbar />
             </div>
@@ -230,7 +237,7 @@ const RecipeList = () => {
 
                 {/* Show Update Recipe form only if editRecipeId is set */}
                 {editRecipeId && (
-                    <form onSubmit={handleUpdateRecipe}>
+                    <form id="update-form" onSubmit={handleUpdateRecipe}>
                         <input
                             type="text"
                             name="recipeName"
@@ -300,62 +307,39 @@ const RecipeList = () => {
                     </form>
                 )}
 
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Recipe Name</th>
-                            <th>Ingredients</th>
-                            <th>Instructions</th>
-                            <th>Category</th>
-                            <th>Preparation</th>
-                            <th>Time</th>
-                            <th>Cooking Time</th>
-                            <th>Servings</th>
-                            <th>Image</th>  
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {filteredRecipes.map((recipe) => (
-                            <tr key={recipe.id}>
-                                <td>{recipe.recipeName}</td>
-                                <td>{recipe.ingredients}</td>
-                                <td>{recipe.instructions}</td>
-                                <td>{recipe.category}</td>
-                                <td>{recipe.preparation}</td>
-                                <td>{recipe.time}</td>
-                                <td>{recipe.cookingTime}</td>
-                                <td>{recipe.servings}</td>
-                                <td>
-                                    <img
-                                        src={recipe.imageUrl}
-                                        alt={recipe.recipeName}
-                                        style={{ width: '100px', height: 'auto' }}
-                                    />
-                                </td>
-                                <td>
-                                    <button onClick={() => handleEditRecipe(recipe)}>Edit</button>
-                                    <button onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
-                                </td>
-                            </tr>
-                        ))}
-                    </tbody>
-                </table>
+                <ul>
+                    {filteredRecipes.map((recipe) => (
+                        <li key={recipe.id}>
+                            <h2>{recipe.recipeName}</h2>
+                            <p>Ingredients: {recipe.ingredients}</p>
+                            <p>Instructions: {recipe.instructions}</p>
+                            <p>Category: {recipe.category}</p>
+                            <p>Preparation: {recipe.preparation}</p>
+                            <p>Time: {recipe.time}</p>
+                            <p>Cooking Time: {recipe.cookingTime}</p>
+                            <p>Servings: {recipe.servings}</p>
+                            <img src={recipe.imageUrl} alt={recipe.recipeName} style={{ width: '100px', height: '100px' }} />
+                            <button onClick={() => handleEditRecipe(recipe)}>Edit</button>
+                            <button onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
+                        </li>
+                    ))}
+                </ul>
             </section>
-        </>
+        </div>
     );
 };
 
-export default RecipeList;
-
 const styles = {
+    container: {
+        position: 'relative',
+        width: '100%',
+    },
     navbarContainer: {
         position: 'absolute',
-        top: '0',
-        right: '0',
-        padding: '10px',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'flex-end',
+        top: 0,
+        right: 0,
+        margin: '10px', // Adjust as needed
     },
 };
+
+export default RecipeList;

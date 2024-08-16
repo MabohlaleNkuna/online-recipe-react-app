@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecipeCard from './RecipeCard';
 import Button from './Button';
-import SearchBar from './SearchBar'; // Import the SearchBar component
+import SearchBar from './SearchBar'; 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser } from '@fortawesome/free-solid-svg-icons';
 
