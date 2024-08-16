@@ -330,15 +330,13 @@ const RecipeList = () => {
 };
 
 const styles = {
-    container: {
-        position: 'relative',
-        width: '100%',
-    },
+  
     navbarContainer: {
         position: 'absolute',
         top: 0,
         right: 0,
-        margin: '10px', // Adjust as needed
+        margin: '10px',
+        
     },
 };
 

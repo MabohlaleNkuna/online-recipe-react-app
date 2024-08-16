@@ -1,6 +1,3 @@
-/* Recipelist.css */
-
-/* General container styling */
 section {
     padding: 20px;
     max-width: 1200px;
@@ -8,7 +5,6 @@ section {
     font-family: Arial, sans-serif;
 }
 
-/* Styling for the form */
 form {
     display: grid;
     gap: 15px;
@@ -19,7 +15,6 @@ form {
     background-color: #f9f9f9;
 }
 
-/* Styling for form inputs */
 form input, 
 form select, 
 form button {
@@ -29,7 +24,6 @@ form button {
     font-size: 16px;
 }
 
-/* Styling for form buttons */
 form button {
     background-color: #004aad;
     color: white;
@@ -41,22 +35,25 @@ form button:hover {
     background-color: #003a8c;
 }
 
-/* Recipe list styling */
 ul {
     list-style: none;
     padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
 }
 
 li {
     border: 1px solid #ddd;
     border-radius: 8px;
     padding: 15px;
-    margin-bottom: 20px;
     background-color: #ffffff;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    flex: 1 1 calc(33.333% - 20px);
+    box-sizing: border-box;
+    max-width: calc(33.333% - 20px);
 }
 
-/* Recipe item title and content styling */
 h2 {
     font-size: 1.5em;
     margin: 0;
@@ -67,11 +64,10 @@ p {
     margin: 5px 0;
 }
 
-/* Consistent image container size */
 .image-container {
     width: 100%;
-    max-width: 300px; /* Fixed width */
-    height: 200px; /* Fixed height */
+    max-width: 300px;
+    height: 200px;
     overflow: hidden;
     border-radius: 8px;
     display: flex;
@@ -84,11 +80,10 @@ p {
 .image-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover; /* Ensures images cover the container without stretching */
+    object-fit: cover;
     border-radius: 8px;
 }
 
-/* Button styling for edit and delete */
 button {
     background-color: #004aad;
     color: white;
@@ -101,4 +96,37 @@ button {
 
 button:hover {
     background-color: #003a8c;
+}
+
+@media (max-width: 1024px) {
+    li {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 768px) {
+    li {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    form input, 
+    form select, 
+    form button {
+        font-size: 12px;
+    }
+
+    li {
+        flex: 1 1 100%;
+        max-width: 100%;
+        margin: 10px 0;
+    }
+
+    button {
+        padding: 6px 10px;
+        font-size: 12px;
+    }
 }
