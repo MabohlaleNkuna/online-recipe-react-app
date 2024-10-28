@@ -4,10 +4,11 @@ import { useNavigate } from 'react-router-dom';
 const Login = () => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
+    const [error, setError] = useState(null); 
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if user is already logged in on component mount
+        
         const userId = localStorage.getItem('userId');
         if (userId) {
             navigate('/'); 
@@ -16,6 +17,7 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        setError(null); 
 
         try {
             const response = await fetch(`http://localhost:3000/users?username=${encodeURIComponent(username)}`);
@@ -26,17 +28,18 @@ const Login = () => {
                 localStorage.setItem('username', username); 
                 navigate('/');
             } else {
-                alert('Invalid credentials');
+                setError('Invalid credentials');
             }
         } catch (error) {
             console.error('Error during login:', error);
-            alert('An error occurred');
+            setError('An error occurred. Please try again.'); 
         }
     };
 
     return (
         <div style={{ textAlign: 'center', padding: '20px' }}>
             <h2>Login</h2>
+            {error && <p style={{ color: 'red' }}>{error}</p>}
             <form onSubmit={handleLogin}>
                 <input
                     type="text"
@@ -44,6 +47,7 @@ const Login = () => {
                     value={username}
                     onChange={(e) => setUsername(e.target.value)}
                     style={{ display: 'block', margin: '10px auto' }}
+                    required 
                 />
                 <input
                     type="password"
@@ -51,6 +55,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     style={{ display: 'block', margin: '10px auto' }}
+                    required 
                 />
                 <button type="submit" style={{ display: 'block', margin: '10px auto' }}>Login</button>
             </form>
