@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import SearchBar from './SearchBar';
-import Navbar from './Navbar'; 
+import Navbar from './Navbar';
 import '../styles/Recipelist.css';
 
 const fetchRecipes = async () => {
-    const response = await fetch('http://localhost:3000/Recipe');
-    if (!response.ok) throw new Error('Failed to fetch Recipe');
+    const response = await fetch('http://localhost:5000/recipes');
+    if (!response.ok) throw new Error('Failed to fetch recipes');
     return response.json();
 };
 
 const addRecipe = async (recipe) => {
-    const response = await fetch('http://localhost:3000/Recipe', {
+    const response = await fetch('http://localhost:5000/recipes', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(recipe),
@@ -20,14 +20,14 @@ const addRecipe = async (recipe) => {
 };
 
 const deleteRecipe = async (id) => {
-    const response = await fetch(`http://localhost:3000/Recipe/${id}`, {
+    const response = await fetch(`http://localhost:5000/recipes/${id}`, {
         method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete recipe');
 };
 
 const updateRecipe = async (id, updatedRecipe) => {
-    const response = await fetch(`http://localhost:3000/Recipe/${id}`, {
+    const response = await fetch(`http://localhost:5000/recipes/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedRecipe),
@@ -46,11 +46,11 @@ const RecipeList = () => {
         time: '',
         cookingTime: '',
         servings: '',
-        imageUrl: '',  
+        imageUrl: '',
     });
     const [editRecipeId, setEditRecipeId] = useState(null);
     const [editRecipe, setEditRecipe] = useState({});
-    const [searchQuery, setSearchQuery] = useState(''); 
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const getRecipes = async () => {
@@ -105,7 +105,7 @@ const RecipeList = () => {
                 time: '',
                 cookingTime: '',
                 servings: '',
-                imageUrl: '', 
+                imageUrl: '',
             });
         } catch (error) {
             console.error('Error adding recipe:', error);
@@ -146,7 +146,7 @@ const RecipeList = () => {
     };
 
     const handleSearchChange = (e) => {
-        setSearchQuery(e.target.value); 
+        setSearchQuery(e.target.value);
     };
 
     const filteredRecipes = recipes.filter(recipe =>
@@ -311,14 +311,9 @@ const RecipeList = () => {
                     {filteredRecipes.map((recipe) => (
                         <li key={recipe.id}>
                             <h2>{recipe.recipeName}</h2>
+                            <p>Category: {recipe.category}</p>
                             <p>Ingredients: {recipe.ingredients}</p>
                             <p>Instructions: {recipe.instructions}</p>
-                            <p>Category: {recipe.category}</p>
-                            <p>Preparation: {recipe.preparation}</p>
-                            <p>Time: {recipe.time}</p>
-                            <p>Cooking Time: {recipe.cookingTime}</p>
-                            <p>Servings: {recipe.servings}</p>
-                            <img src={recipe.imageUrl} alt={recipe.recipeName} style={{ width: '100px', height: '100px' }} />
                             <button onClick={() => handleEditRecipe(recipe)}>Edit</button>
                             <button onClick={() => handleDeleteRecipe(recipe.id)}>Delete</button>
                         </li>
@@ -330,13 +325,12 @@ const RecipeList = () => {
 };
 
 const styles = {
-  
+    container: {
+        display: 'flex',
+        flexDirection: 'row',
+    },
     navbarContainer: {
-        position: 'absolute',
-        top: 0,
-        right: 0,
-        margin: '10px',
-        
+        width: '15%',
     },
 };
 
