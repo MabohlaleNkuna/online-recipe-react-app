@@ -4,13 +4,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
     const [isEditing, setIsEditing] = useState(false);
     const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
 
-    // Default props
-    const defaultProps = {
-        onUpdateRecipe: () => {}, // No-op function
-        onDeleteRecipe: () => {}, // No-op function
-    };
 
-    // Ensure recipe has required properties
     if (!recipe || !recipe.recipeName || !recipe.ingredients || !recipe.instructions) {
         return null;
     }
@@ -22,11 +16,11 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
 
     const handleUpdateClick = () => {
         if (isEditing) {
-            onUpdateRecipe(recipe._id, updatedRecipe); // Use _id instead of id
+            onUpdateRecipe(recipe._id, updatedRecipe); 
         } else {
-            setUpdatedRecipe(recipe); // Reset to original recipe values
+            setUpdatedRecipe(recipe); 
         }
-        setIsEditing(!isEditing); // Toggle editing state
+        setIsEditing(!isEditing); 
     };
 
     return (
@@ -88,7 +82,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                             {isEditing ? 'Save Changes' : 'Edit Recipe'}
                         </button>
                         <button
-                            onClick={() => onDeleteRecipe(recipe._id)} // Use _id for deletion
+                            onClick={() => onDeleteRecipe(recipe._id)} 
                             style={{
                                 padding: '10px',
                                 backgroundColor: '#ff4d4d',
@@ -122,13 +116,15 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                                 onChange={handleChange}
                                 placeholder="Instructions"
                             />
-                            <input
-                                type="text"
+                             <select
                                 name="category"
                                 value={updatedRecipe.category}
                                 onChange={handleChange}
-                                placeholder="Category"
-                            />
+                            >
+                                <option value="Breakfast">Breakfast</option>
+                                <option value="Lunch">Lunch</option>
+                                <option value="Dinner">Dinner</option>
+                             </select>
                             <input
                                 type="text"
                                 name="preparation"
@@ -159,8 +155,8 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
 };
 
 RecipeCard.defaultProps = {
-    onUpdateRecipe: () => {}, // No-op function
-    onDeleteRecipe: () => {}, // No-op function
+    onUpdateRecipe: () => {}, 
+    onDeleteRecipe: () => {}, 
 };
 
 export default RecipeCard;
