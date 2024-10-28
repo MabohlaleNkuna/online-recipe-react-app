@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDeleteRecipe }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
-
+    const [successMessage, setSuccessMessage] = useState(''); 
 
     if (!recipe || !recipe.recipeName || !recipe.ingredients || !recipe.instructions) {
         return null;
@@ -17,10 +17,20 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
     const handleUpdateClick = () => {
         if (isEditing) {
             onUpdateRecipe(recipe._id, updatedRecipe); 
+            setSuccessMessage('Recipe updated successfully!'); 
+            // Clear message after 4 seconds
+            setTimeout(() => setSuccessMessage(''), 4000);
         } else {
             setUpdatedRecipe(recipe); 
         }
         setIsEditing(!isEditing); 
+    };
+
+    const handleDeleteClick = () => {
+        onDeleteRecipe(recipe._id); 
+        setSuccessMessage('Recipe deleted successfully!');
+        // Clear message after 4 seconds
+        setTimeout(() => setSuccessMessage(''), 4000);
     };
 
     return (
@@ -38,6 +48,21 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                 fontSize: '1.5em',
                 textAlign: 'center'
             }}>{recipe.recipeName}</h2>
+
+            {/* Success message display */}
+            {successMessage && (
+                <div style={{
+                    backgroundColor: '#4CAF50', 
+                    color: 'white',
+                    padding: '10px',
+                    borderRadius: '5px',
+                    marginBottom: '10px',
+                    textAlign: 'center'
+                }}>
+                    {successMessage}
+                </div>
+            )}
+
             <button
                 onClick={() => onViewRecipe(recipe)}
                 style={{
@@ -53,6 +78,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
             >
                 {isSelected ? 'Hide Details' : 'View Full Recipe'}
             </button>
+
             {isSelected && (
                 <div style={{
                     marginTop: '20px',
@@ -82,7 +108,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                             {isEditing ? 'Save Changes' : 'Edit Recipe'}
                         </button>
                         <button
-                            onClick={() => onDeleteRecipe(recipe._id)} 
+                            onClick={handleDeleteClick} 
                             style={{
                                 padding: '10px',
                                 backgroundColor: '#ff4d4d',
@@ -116,7 +142,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                                 onChange={handleChange}
                                 placeholder="Instructions"
                             />
-                             <select
+                            <select
                                 name="category"
                                 value={updatedRecipe.category}
                                 onChange={handleChange}
@@ -124,7 +150,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                                 <option value="Breakfast">Breakfast</option>
                                 <option value="Lunch">Lunch</option>
                                 <option value="Dinner">Dinner</option>
-                             </select>
+                            </select>
                             <input
                                 type="text"
                                 name="preparation"
@@ -155,8 +181,8 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
 };
 
 RecipeCard.defaultProps = {
-    onUpdateRecipe: () => {}, 
-    onDeleteRecipe: () => {}, 
+    onUpdateRecipe: () => {},
+    onDeleteRecipe: () => {},
 };
 
 export default RecipeCard;
