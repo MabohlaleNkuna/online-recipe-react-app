@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 
 const Registration = () => {
@@ -6,12 +6,12 @@ const Registration = () => {
     const [password, setPassword] = useState('');
     const [email, setEmail] = useState('');
     const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState(''); 
     const navigate = useNavigate();
 
     const handleRegister = async (e) => {
         e.preventDefault();
 
-        // Check for required fields
         if (!username || !password || !email) {
             setError('Please fill in all required fields.');
             return;
@@ -23,13 +23,12 @@ const Registration = () => {
             email,
         };
 
-        // Send user data to the server
         await sendUserData(userData);
     };
 
     const sendUserData = async (userData) => {
         try {
-            const response = await fetch('http://localhost:3000/users', {
+            const response = await fetch('http://localhost:5000/api/users/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,7 +40,10 @@ const Registration = () => {
                 throw new Error('Failed to register user.');
             }
 
-            navigate('/login'); 
+            setSuccessMessage('Registration successful!'); 
+            setTimeout(() => {
+                navigate('/login'); 
+            }, 2000); 
         } catch (error) {
             setError(error.message);
         }
@@ -51,6 +53,7 @@ const Registration = () => {
         <div>
             <h2>Registration</h2>
             {error && <p style={{ color: 'red' }}>{error}</p>}
+            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} 
             <form onSubmit={handleRegister}>
                 <input
                     type="text"
