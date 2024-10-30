@@ -11,7 +11,7 @@ const Login = () => {
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         if (userId) {
-            navigate('/home'); // Navigate to home if user is already logged in
+            navigate('/home'); 
         }
     }, [navigate]);
 

@@ -8,7 +8,7 @@ const RecipeForm = ({ newRecipe, handleAddRecipeChange, handleAddRecipeSubmit, i
                 <h2 style={styles.title}>Add a New Recipe</h2>
                 <input
                     type="text"
-                    name="recipeName"
+                    name="title"
                     placeholder="Recipe Name"
                     value={newRecipe.recipeName}
                     onChange={handleAddRecipeChange}
@@ -37,6 +37,8 @@ const RecipeForm = ({ newRecipe, handleAddRecipeChange, handleAddRecipeSubmit, i
                     onChange={handleAddRecipeChange}
                     style={styles.select}
                 >
+                    <option>Select</option>
+
                     <option value="Breakfast">Breakfast</option>
                     <option value="Lunch">Lunch</option>
                     <option value="Dinner">Dinner</option>

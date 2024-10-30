@@ -5,7 +5,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
     const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
     const [successMessage, setSuccessMessage] = useState(''); 
 
-    if (!recipe || !recipe.recipeName || !recipe.ingredients || !recipe.instructions) {
+    if (!recipe || !recipe.title || !recipe.ingredients || !recipe.instructions) {
         return null;
     }
 
@@ -18,7 +18,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
         if (isEditing) {
             onUpdateRecipe(recipe._id, updatedRecipe); 
             setSuccessMessage('Recipe updated successfully!'); 
-            // Clear message after 4 seconds
+           
             setTimeout(() => setSuccessMessage(''), 4000);
         } else {
             setUpdatedRecipe(recipe); 
@@ -29,10 +29,8 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
     const handleDeleteClick = () => {
         onDeleteRecipe(recipe._id); 
         setSuccessMessage('Recipe deleted successfully!');
-        // Clear message after 4 seconds
         setTimeout(() => setSuccessMessage(''), 4000);
     };
-
     return (
         <div style={{
             border: '1px solid #ddd',
@@ -47,7 +45,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                 margin: '15px 0',
                 fontSize: '1.5em',
                 textAlign: 'center'
-            }}>{recipe.recipeName}</h2>
+            }}>{recipe.title}</h2>
 
             {/* Success message display */}
             {successMessage && (
@@ -125,8 +123,8 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                         <div>
                             <input
                                 type="text"
-                                name="recipeName"
-                                value={updatedRecipe.recipeName}
+                                name="title"
+                                value={updatedRecipe.title}
                                 onChange={handleChange}
                                 placeholder="Recipe Name"
                             />
@@ -180,9 +178,6 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
     );
 };
 
-RecipeCard.defaultProps = {
-    onUpdateRecipe: () => {},
-    onDeleteRecipe: () => {},
-};
+
 
 export default RecipeCard;

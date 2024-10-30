@@ -13,7 +13,7 @@ function HomePage() {
     const [selectedRecipe, setSelectedRecipe] = useState(null);
     const [isAddRecipeOpen, setIsAddRecipeOpen] = useState(false);
     const [newRecipe, setNewRecipe] = useState({
-        recipeName: '',
+        title: '',
         ingredients: '',
         instructions: '',
         category: '',
@@ -21,12 +21,16 @@ function HomePage() {
         cookingTime: '',
         servings: ''
     });
-    const [successMessage, setSuccessMessage] = useState(''); // New state for success message
+    const [successMessage, setSuccessMessage] = useState(''); 
 
     useEffect(() => {
         const fetchRecipes = async () => {
             try {
-                const response = await fetch('http://localhost:5000/recipes');
+                const response = await fetch('http://localhost:5000/recipes', {
+                    headers: {
+                        Authorization: `Bearer ${localStorage.getItem('token')}`,
+                    }
+                });
                 const data = await response.json();
                 if (data.recipes && Array.isArray(data.recipes)) {
                     setRecipes(data.recipes);
@@ -53,6 +57,7 @@ function HomePage() {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
                 },
                 body: JSON.stringify(updatedRecipe),
             });
@@ -75,6 +80,10 @@ function HomePage() {
         try {
             const response = await fetch(`http://localhost:5000/recipes/${id}`, {
                 method: 'DELETE',
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                },
+                
             });
 
             if (!response.ok) {
@@ -88,49 +97,18 @@ function HomePage() {
         }
     };
 
-    /*const addRecipe = async (newRecipe) => {
-        try {
-            const response = await fetch('http://localhost:5000/recipes', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(newRecipe),
-            });
-
-            if (!response.ok) {
-                throw new Error('Failed to add recipe');
-            }
-
-            const addedRecipe = await response.json();
-            setRecipes((prevRecipes) => [...prevRecipes, addedRecipe]);
-            setIsAddRecipeOpen(false);
-            setNewRecipe({
-                recipeName: '',
-                ingredients: '',
-                instructions: '',
-                category: '',
-                preparation: '',
-                cookingTime: '',
-                servings: ''
-            });
-            setSuccessMessage('Recipe added successfully!'); 
-            setTimeout(() => setSuccessMessage(''), 3000); 
-        } catch (error) {
-            console.error('Error adding recipe:', error);
-            setError('Failed to add recipe.');
-        }
-    };*/
     const addRecipe = async (newRecipe) => {
         try {
             const response = await fetch('http://localhost:5000/recipes', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
+                    Authorization: `Bearer ${localStorage.getItem('token')}`,
+                   
                 },
                 body: JSON.stringify(newRecipe),
             });
-
+            console.log(response)
             if (!response.ok) {
                 throw new Error('Failed to add recipe');
             }
@@ -175,6 +153,7 @@ function HomePage() {
         e.preventDefault();
         addRecipe(newRecipe);
     };
+    console.log(filteredRecipes)
 
     return (
         <div 
