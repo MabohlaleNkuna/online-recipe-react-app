@@ -5,6 +5,7 @@ import Registration from './components/Registration';
 import Login from './components/Login';
 import ProfilePage from './components/ProfilePage';
 import Navbar from './components/Navbar';
+import LandingPage from './components/LandingPage'; 
 
 function App() {
     return (
@@ -12,8 +13,9 @@ function App() {
             <div>
                 <Navbar />
                 <Routes>
-                    <Route path="/" element={<Registration />} /> 
-                    <Route path="/login" element={<Login />} /> 
+                    <Route path="/" element={<LandingPage />} /> 
+                    <Route path="/login" element={<Login />} />
+                    <Route path="/registration" element={<Registration />} /> 
                     <Route path="/home" element={<HomePage />} />
                     <Route path="/profile" element={<ProfilePage />} />
                 </Routes>

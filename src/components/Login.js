@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import Button from './Button';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -68,7 +69,7 @@ const Login = () => {
                 borderRadius: '8px',
                 boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.3)'
             }}>
-                <h2 style={{ marginBottom: '20px', color: '#black' }}>Login</h2>
+                <h2 style={{ marginBottom: '20px', color: '#FFFFFF' }}>Login</h2>
                 {error && <p style={{ color: '#F05D5E', marginBottom: '10px' }}>{error}</p>}
                 {successMessage && <p style={{ color: '#A6E3A1', marginBottom: '10px' }}>{successMessage}</p>}
                 
@@ -101,21 +102,13 @@ const Login = () => {
                         }}
                         required 
                     />
-                    <button 
-                        type="submit" 
-                        style={{ 
-                            width: '100%', 
-                            padding: '12px', 
-                            backgroundColor: '#F4C561', 
-                            border: 'none', 
-                            borderRadius: '4px', 
-                            color: '#004AAD', 
-                            fontWeight: 'bold',
-                            cursor: 'pointer' 
-                        }}
-                    >
-                        Login
-                    </button>
+                    <Button 
+                        onClick={handleLogin} 
+                        label="Login" 
+                        color="#F4C561" 
+                        textColor="#004AAD"
+                        style={{ width: '100%', padding: '12px', fontWeight: 'bold' }}
+                    />
                 </form>
             </div>
         </div>
