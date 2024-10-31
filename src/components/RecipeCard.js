@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 
-const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDeleteRecipe }) => {
+const RecipeCard = ({ recipe, user = {}, isSelected, onViewRecipe, onUpdateRecipe, onDeleteRecipe }) => {
     const [isEditing, setIsEditing] = useState(false);
     const [updatedRecipe, setUpdatedRecipe] = useState(recipe);
-    const [successMessage, setSuccessMessage] = useState(''); 
+    const [successMessage, setSuccessMessage] = useState('');
+
+    const isAdmin = user.role === 'admin';
+    const isOwner = recipe.userId === user.id;
 
     if (!recipe || !recipe.title || !recipe.ingredients || !recipe.instructions) {
-        return null;
+        return null; // Return null if recipe is missing required fields
     }
 
     const handleChange = (e) => {
@@ -16,21 +19,27 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
 
     const handleUpdateClick = () => {
         if (isEditing) {
-            onUpdateRecipe(recipe._id, updatedRecipe); 
-            setSuccessMessage('Recipe updated successfully!'); 
-           
-            setTimeout(() => setSuccessMessage(''), 4000);
+            if (!updatedRecipe.title || !updatedRecipe.ingredients || !updatedRecipe.instructions) {
+                setSuccessMessage('Please fill in all fields.');
+                setTimeout(() => setSuccessMessage(''), 4000);
+                return;
+            }
+
+            onUpdateRecipe(recipe._id, updatedRecipe);
+            setSuccessMessage('Recipe updated successfully!');
         } else {
-            setUpdatedRecipe(recipe); 
+            setUpdatedRecipe(recipe);
         }
-        setIsEditing(!isEditing); 
+        setIsEditing(!isEditing);
+        setTimeout(() => setSuccessMessage(''), 4000);
     };
 
     const handleDeleteClick = () => {
-        onDeleteRecipe(recipe._id); 
+        onDeleteRecipe(recipe._id);
         setSuccessMessage('Recipe deleted successfully!');
         setTimeout(() => setSuccessMessage(''), 4000);
     };
+
     return (
         <div style={{
             border: '1px solid #ddd',
@@ -47,10 +56,9 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                 textAlign: 'center'
             }}>{recipe.title}</h2>
 
-            {/* Success message display */}
             {successMessage && (
                 <div style={{
-                    backgroundColor: '#4CAF50', 
+                    backgroundColor: '#4CAF50',
                     color: 'white',
                     padding: '10px',
                     borderRadius: '5px',
@@ -92,32 +100,36 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                     <p><strong>Cooking Time:</strong> {recipe.cookingTime}</p>
                     <p><strong>Servings:</strong> {recipe.servings}</p>
                     <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '20px' }}>
-                        <button
-                            onClick={handleUpdateClick}
-                            style={{
-                                padding: '10px',
-                                backgroundColor: '#ffa500',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            {isEditing ? 'Save Changes' : 'Edit Recipe'}
-                        </button>
-                        <button
-                            onClick={handleDeleteClick} 
-                            style={{
-                                padding: '10px',
-                                backgroundColor: '#ff4d4d',
-                                color: 'white',
-                                border: 'none',
-                                borderRadius: '5px',
-                                cursor: 'pointer'
-                            }}
-                        >
-                            Delete Recipe
-                        </button>
+                        {isAdmin || isOwner ? (
+                            <button
+                                onClick={handleUpdateClick}
+                                style={{
+                                    padding: '10px',
+                                    backgroundColor: '#ffa500',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '5px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                {isEditing ? 'Save Changes' : 'Edit Recipe'}
+                            </button>
+                        ) : null}
+                        {isAdmin || isOwner ? (
+                            <button
+                                onClick={handleDeleteClick}
+                                style={{
+                                    padding: '10px',
+                                    backgroundColor: '#ff4d4d',
+                                    color: 'white',
+                                    border: 'none',
+                                    borderRadius: '5px',
+                                    cursor: 'pointer'
+                                }}
+                            >
+                                Delete Recipe
+                            </button>
+                        ) : null}
                     </div>
                     {isEditing && (
                         <div>
@@ -127,18 +139,21 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                                 value={updatedRecipe.title}
                                 onChange={handleChange}
                                 placeholder="Recipe Name"
+                                required
                             />
                             <textarea
                                 name="ingredients"
                                 value={updatedRecipe.ingredients}
                                 onChange={handleChange}
                                 placeholder="Ingredients"
+                                required
                             />
                             <textarea
                                 name="instructions"
                                 value={updatedRecipe.instructions}
                                 onChange={handleChange}
                                 placeholder="Instructions"
+                                required
                             />
                             <select
                                 name="category"
@@ -169,6 +184,7 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
                                 value={updatedRecipe.servings}
                                 onChange={handleChange}
                                 placeholder="Servings"
+                                required
                             />
                         </div>
                     )}
@@ -177,7 +193,5 @@ const RecipeCard = ({ recipe, isSelected, onViewRecipe, onUpdateRecipe, onDelete
         </div>
     );
 };
-
-
 
 export default RecipeCard;
