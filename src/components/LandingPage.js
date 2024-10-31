@@ -50,19 +50,23 @@ const LandingPage = () => {
             color: '#241D10',
             fontWeight: 'bold',
         },
+        link: {
+            color: '#FFD700',
+            fontWeight: 'bold',
+        },
     };
 
     return (
         <div style={styles.container}>
             <h1 style={styles.heading}>Welcome to RecipeApp</h1>
             <p style={styles.paragraph}>
-                Click <Link to="/login" style={{ color: '#FFD700', fontWeight: 'bold' }}>login</Link> or <Link to="/registration" style={{ color: '#FFD700', fontWeight: 'bold' }}>register</Link> to view and update your favorite recipes!
+                Click <Link to="/login" style={styles.link}>login</Link> or <Link to="/registration" style={styles.link}>register</Link> to view and update your favorite recipes!
             </p>
             <div style={styles.recipeImages}>
                 <div style={styles.recipeItem}>
                     <img
                         src={require('../assets/breakfast.jpg')}
-                        alt="Breakfast"
+                        alt="A variety of breakfast dishes"
                         style={styles.recipeImage}
                     />
                     <h3 style={styles.label}>Breakfast</h3>
@@ -70,7 +74,7 @@ const LandingPage = () => {
                 <div style={styles.recipeItem}>
                     <img
                         src={require('../assets/lunch.jpg')}
-                        alt="Lunch"
+                        alt="A variety of lunch dishes"
                         style={styles.recipeImage}
                     />
                     <h3 style={styles.label}>Lunch</h3>
@@ -78,7 +82,7 @@ const LandingPage = () => {
                 <div style={styles.recipeItem}>
                     <img
                         src={require('../assets/dinner.jpg')}
-                        alt="Dinner"
+                        alt="A variety of dinner dishes"
                         style={styles.recipeImage}
                     />
                     <h3 style={styles.label}>Dinner</h3>

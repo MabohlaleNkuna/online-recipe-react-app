@@ -11,7 +11,7 @@ function Navbar() {
         localStorage.removeItem('token');
         localStorage.removeItem('email');
 
-        navigate('/login');
+        navigate('/');
     };
 
     return (
