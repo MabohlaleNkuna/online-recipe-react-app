@@ -5,7 +5,7 @@ const Login = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState(null);
-    const [successMessage, setSuccessMessage] = useState(''); // State for success message
+    const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,7 +18,7 @@ const Login = () => {
     const handleLogin = async (e) => {
         e.preventDefault();
         setError(null); 
-        setSuccessMessage(''); // Clear success message on new login attempt
+        setSuccessMessage('');
 
         try {
             const response = await fetch('http://localhost:5000/api/users/login', {
@@ -32,48 +32,92 @@ const Login = () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Save user ID and token in local storage
                 localStorage.setItem('userId', data._id);
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('email', email); 
 
-                setSuccessMessage('Login successful! Redirecting to homepage...'); // Set success message
+                setSuccessMessage('Login successful! Redirecting to homepage...');
                 setTimeout(() => {
-                    navigate('/home'); // Redirect to home page after a delay
-                }, 2000); // 2 seconds delay
+                    navigate('/home');
+                }, 2000);
             } else {
                 setError(data.message || 'Invalid credentials');
             }
         } catch (error) {
             console.error('Error during login:', error);
-            setError('An error occurred. Please try again.'); 
+            setError('An error occurred. Please try again.');
         }
     };
 
     return (
-        <div style={{ textAlign: 'center', padding: '20px' }}>
-            <h2>Login</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>}
-            {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>} {/* Display success message */}
-            <form onSubmit={handleLogin}>
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    style={{ display: 'block', margin: '10px auto' }}
-                    required 
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                    style={{ display: 'block', margin: '10px auto' }}
-                    required 
-                />
-                <button type="submit" style={{ display: 'block', margin: '10px auto' }}>Login</button>
-            </form>
+        <div 
+            style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                minHeight: '100vh', 
+                background: 'linear-gradient(to right, #F4C561, #004AAD)', 
+                color: '#FFFFFF'
+            }}
+        >
+            <div style={{ 
+                padding: '30px', 
+                maxWidth: '400px', 
+                width: '100%', 
+                backgroundColor: '#241D10', 
+                borderRadius: '8px',
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.3)'
+            }}>
+                <h2 style={{ marginBottom: '20px', color: '#black' }}>Login</h2>
+                {error && <p style={{ color: '#F05D5E', marginBottom: '10px' }}>{error}</p>}
+                {successMessage && <p style={{ color: '#A6E3A1', marginBottom: '10px' }}>{successMessage}</p>}
+                
+                <form onSubmit={handleLogin}>
+                    <input
+                        type="email"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        style={{ 
+                            width: '100%', 
+                            padding: '10px', 
+                            margin: '10px 0', 
+                            border: '1px solid #ccc', 
+                            borderRadius: '4px' 
+                        }}
+                        required 
+                    />
+                    <input
+                        type="password"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                        style={{ 
+                            width: '100%', 
+                            padding: '10px', 
+                            margin: '10px 0', 
+                            border: '1px solid #ccc', 
+                            borderRadius: '4px' 
+                        }}
+                        required 
+                    />
+                    <button 
+                        type="submit" 
+                        style={{ 
+                            width: '100%', 
+                            padding: '12px', 
+                            backgroundColor: '#F4C561', 
+                            border: 'none', 
+                            borderRadius: '4px', 
+                            color: '#004AAD', 
+                            fontWeight: 'bold',
+                            cursor: 'pointer' 
+                        }}
+                    >
+                        Login
+                    </button>
+                </form>
+            </div>
         </div>
     );
 };

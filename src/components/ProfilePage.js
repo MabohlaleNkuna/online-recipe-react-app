@@ -1,302 +1,166 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Button from './Button';
-import '../styles/ProfilePage.css';
 
-function Modal({ isOpen, onClose, children }) {
-    if (!isOpen) return null;
-
-    return (
-        <div className="modal">
-            <div className="modal-content">
-                <button onClick={onClose} className="modal-close-button">X</button>
-                {children}
-            </div>
-        </div>
-    );
-}
-
-function ProfilePage() {
-    const [userData, setUserData] = useState({
-        name: '',
-        surname: '',
-        email: '',
-        profilePicture: '',
-        username: '',
-        password: '',
-    });
-
+const Profile = () => {
+    const [userData, setUserData] = useState({ username: '', email: '' });
     const [isEditing, setIsEditing] = useState(false);
-    const [newData, setNewData] = useState({
-        name: '',
-        surname: '',
-        email: '',
-        profilePicture: '',
-    });
-    const [newPassword, setNewPassword] = useState('');
-    const [confirmPassword, setConfirmPassword] = useState('');
+    const [error, setError] = useState(null);
+    const [successMessage, setSuccessMessage] = useState('');
     const navigate = useNavigate();
-
+    const userId = localStorage.getItem('userId');
+    
     useEffect(() => {
+        // Fetch user data on component mount
         const fetchUserData = async () => {
-            const userId = localStorage.getItem('userId');
-            if (userId) {
-                try {
-                    const response = await fetch(`http://localhost:3000/users/${userId}`);
-                    if (response.ok) {
-                        const data = await response.json();
-                        setUserData(data);
-                        setNewData({
-                            name: data.name,
-                            surname: data.surname,
-                            email: data.email,
-                            profilePicture: data.profilePicture,
-                        });
-                    } else {
-                        console.error('Failed to fetch user data');
-                    }
-                } catch (error) {
-                    console.error('Error fetching user data:', error);
+            try {
+                const response = await fetch(`http://localhost:5000/api/users/${userId}`);
+                const data = await response.json();
+                if (response.ok) {
+                    setUserData({ username: data.username, email: data.email });
+                } else {
+                    setError('Failed to load user data');
                 }
+            } catch (error) {
+                setError('An error occurred. Please try again.');
             }
         };
+        if (userId) fetchUserData();
+    }, [userId]);
 
-        fetchUserData();
-    }, []);
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        setError(null);
+        setSuccessMessage('');
 
-    const handleUpdateProfile = async () => {
-        const userId = localStorage.getItem('userId');
-        if (userId) {
-            try {
-                const response = await fetch(`http://localhost:3000/users/${userId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        ...userData,
-                        ...newData,
-                        password: newPassword || userData.password,
-                    }),
-                });
-                if (response.ok) {
-                    alert('Profile updated successfully');
-                    setUserData(prev => ({
-                        ...prev,
-                        ...newData,
-                        password: newPassword || prev.password,
-                    }));
-                    setIsEditing(false);
-                } else {
-                    alert('Failed to update profile');
-                }
-            } catch (error) {
-                alert('Error updating profile:', error);
+        try {
+            const response = await fetch(`http://localhost:5000/api/users/${userId}`, {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(userData),
+            });
+            if (response.ok) {
+                setSuccessMessage('Profile updated successfully!');
+                setIsEditing(false);
+            } else {
+                setError('Failed to update profile');
             }
+        } catch (error) {
+            setError('An error occurred. Please try again.');
         }
     };
 
-    const handleUpdatePassword = async () => {
-        if (newPassword !== confirmPassword) {
-            alert('Passwords do not match');
-            return;
-        }
-
-        const userId = localStorage.getItem('userId');
-        if (userId) {
-            try {
-                const response = await fetch(`http://localhost:3000/users/${userId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({
-                        ...userData,
-                        password: newPassword,
-                    }),
-                });
-                if (response.ok) {
-                    alert('Password updated successfully');
-                    setNewPassword('');
-                    setConfirmPassword('');
-                } else {
-                    alert('Failed to update password');
-                }
-            } catch (error) {
-                alert('Error updating password:', error);
+    const handleDelete = async () => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/users/${userId}`, {
+                method: 'DELETE',
+            });
+            if (response.ok) {
+                localStorage.clear();
+                navigate('/register');
+            } else {
+                setError('Failed to delete profile');
             }
+        } catch (error) {
+            setError('An error occurred. Please try again.');
         }
-    };
-
-    const handleProfilePictureChange = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onloadend = () => {
-                setNewData({ ...newData, profilePicture: reader.result });
-            };
-            reader.readAsDataURL(file);
-        }
-    };
-
-    const handleDeleteProfile = async () => {
-        const userId = localStorage.getItem('userId');
-        if (userId) {
-            try {
-                const response = await fetch(`http://localhost:3000/users/${userId}`, {
-                    method: 'DELETE',
-                });
-                if (response.ok) {
-                    alert('Profile deleted successfully');
-                    localStorage.removeItem('userId');
-                    localStorage.removeItem('username');
-                    window.location.href = '/';
-                } else {
-                    alert('Failed to delete profile');
-                }
-            } catch (error) {
-                alert('Error deleting profile:', error);
-            }
-        }
-    };
-
-    const handleLogout = () => {
-        // Remove user from localStorage
-        localStorage.removeItem('userId');
-        localStorage.removeItem('username');
-        // Redirect to HomePage
-        navigate('/');
-    };
-
-    const handleNavigateToRecipeList = () => {
-        navigate('/recipelist');
     };
 
     return (
-        <div className="profile-page">
-            <div className="profile-picture">
-                <img src={userData.profilePicture || 'default-profile-pic-url'} alt="Profile" />
-            </div>
-            <div className="profile-content">
-                <p><strong>Username:</strong> {userData.username}</p>
-                <p><strong>Name:</strong> {userData.name}</p>
-                <p><strong>Surname:</strong> {userData.surname}</p>
-                <p><strong>Email:</strong> {userData.email}</p>
-                <Button 
-                    onClick={() => setIsEditing(true)} 
-                    label="Update Profile" 
-                    color="#004AAD" 
+        <div 
+            style={{ 
+                display: 'flex', 
+                alignItems: 'center', 
+                justifyContent: 'center', 
+                minHeight: '100vh', 
+                background: 'linear-gradient(to right, #F4C561, #004AAD)', 
+                color: '#FFFFFF'
+            }}
+        >
+            <div style={{ 
+                padding: '30px', 
+                maxWidth: '400px', 
+                width: '100%', 
+                backgroundColor: '#241D10', 
+                borderRadius: '8px',
+                boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.3)'
+            }}>
+                <img 
+                    src="https://via.placeholder.com/100?text=Profile+Icon" 
+                    alt="Profile Icon" 
+                    style={{ borderRadius: '50%', marginBottom: '20px' }}
                 />
-                <Button 
-                    onClick={handleDeleteProfile} 
-                    label="Delete Profile" 
-                    color="#FF0000" 
-                />
-                <button 
-                    onClick={handleLogout} 
-                    className="logout-button"
-                >
-                    Logout
-                </button>
-                <div className="update-recipes">
-                    <p>
-                        To update or add new recipes,{' '}
+                <h2 style={{ marginBottom: '20px', color: '#FFFFFF' }}>Profile</h2>
+                
+                {error && <p style={{ color: '#F05D5E', marginBottom: '10px' }}>{error}</p>}
+                {successMessage && <p style={{ color: '#A6E3A1', marginBottom: '10px' }}>{successMessage}</p>}
+                
+                {!isEditing ? (
+                    <div>
+                        <p><strong>Username:</strong> {userData.username}</p>
+                        <p><strong>Email:</strong> {userData.email}</p>
                         <button 
-                            onClick={handleNavigateToRecipeList} 
+                            onClick={() => setIsEditing(true)} 
+                            style={buttonStyle}
                         >
-                            click here
-                        </button>.
-                    </p>
-                </div>
+                            Update
+                        </button>
+                        <button 
+                            onClick={handleDelete} 
+                            style={{ ...buttonStyle, backgroundColor: '#F05D5E', marginTop: '10px' }}
+                        >
+                            Delete Profile
+                        </button>
+                    </div>
+                ) : (
+                    <form onSubmit={handleUpdate}>
+                        <input
+                            type="text"
+                            placeholder="Username"
+                            value={userData.username}
+                            onChange={(e) => setUserData({ ...userData, username: e.target.value })}
+                            style={inputStyle}
+                            required
+                        />
+                        <input
+                            type="email"
+                            placeholder="Email"
+                            value={userData.email}
+                            onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                            style={inputStyle}
+                            required
+                        />
+                        <button type="submit" style={buttonStyle}>Save Changes</button>
+                        <button 
+                            onClick={() => setIsEditing(false)} 
+                            style={{ ...buttonStyle, backgroundColor: '#AAAAAA', marginTop: '10px' }}
+                        >
+                            Cancel
+                        </button>
+                    </form>
+                )}
             </div>
-
-            {/* Modal for updating profile */}
-            <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
-                <h3>Update Profile</h3>
-                <div>
-                    <label>Name:</label>
-                    <input
-                        type="text"
-                        value={newData.name}
-                        onChange={(e) => setNewData({ ...newData, name: e.target.value })}
-                    />
-                </div>
-                <div>
-                    <label>Surname:</label>
-                    <input
-                        type="text"
-                        value={newData.surname}
-                        onChange={(e) => setNewData({ ...newData, surname: e.target.value })}
-                    />
-                </div>
-                <div>
-                    <label>Email:</label>
-                    <input
-                        type="email"
-                        value={newData.email}
-                        onChange={(e) => setNewData({ ...newData, email: e.target.value })}
-                    />
-                </div>
-                <div>
-                    <label>Profile Picture:</label>
-                    <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleProfilePictureChange}
-                    />
-                </div>
-                <div>
-                    <label>New Password:</label>
-                    <input
-                        type="password"
-                        value={newPassword}
-                        onChange={(e) => setNewPassword(e.target.value)}
-                    />
-                </div>
-                <div>
-                    <label>Confirm Password:</label>
-                    <input
-                        type="password"
-                        value={confirmPassword}
-                        onChange={(e) => setConfirmPassword(e.target.value)}
-                    />
-                </div>
-                <Button 
-                    onClick={handleUpdateProfile} 
-                    label="Save Changes" 
-                    color="#004AAD" 
-                />
-            </Modal>
         </div>
     );
-}
+};
 
-export default ProfilePage;
+const buttonStyle = {
+    width: '100%',
+    padding: '12px',
+    backgroundColor: '#F4C561',
+    border: 'none',
+    borderRadius: '4px',
+    color: '#004AAD',
+    fontWeight: 'bold',
+    cursor: 'pointer',
+    marginTop: '10px'
+};
 
-/*
-// src/App.js
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
-import HomePage from './components/HomePage';
-import Registration from './components/Registration';
-import Login from './components/Login';
-import Profile from './components/Profile';
+const inputStyle = {
+    width: '100%',
+    padding: '10px',
+    margin: '10px 0',
+    border: '1px solid #ccc',
+    borderRadius: '4px'
+};
 
-function App() {
-    const isAuthenticated = localStorage.getItem('userId') !== null;
-
-    return (
-        <Router>
-            <Routes>
-                <Route path="/" element={isAuthenticated ? <HomePage /> : <Navigate to="/login" />} />
-                <Route path="/login" element={<Login />} />
-                <Route path="/register" element={<Registration />} />
-                <Route path="/profile" element={isAuthenticated ? <Profile /> : <Navigate to="/login" />} />
-            </Routes>
-        </Router>
-    );
-}
-
-export default App;
-
-*/
+export default Profile;

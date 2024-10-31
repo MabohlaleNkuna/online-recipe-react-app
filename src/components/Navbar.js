@@ -1,113 +1,54 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import React from 'react'; 
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 
-class Navbar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userId: localStorage.getItem('userId'),
-            location: window.location.pathname
-        };
-    }
+function Navbar() {
+    const location = useLocation();
+    const navigate = useNavigate();
 
-    handleLogout = () => {
+    const handleLogout = () => {
+        // Clear token and session data
         localStorage.removeItem('userId');
-        localStorage.removeItem('username');
-        this.props.history.push('/login');
+        localStorage.removeItem('token');
+        localStorage.removeItem('email');
+
+        navigate('/login');
     };
 
-    componentDidMount() {
-        this.setState({ location: window.location.pathname });
-        window.addEventListener('popstate', this.handleLocationChange);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('popstate', this.handleLocationChange);
-    }
-
-    handleLocationChange = () => {
-        this.setState({ location: window.location.pathname });
-    };
-
-    render() {
-        const { userId, location } = this.state;
-        const isRecipeListPage = location === '/recipelist';
-
-        return (
-            <nav style={styles.navbar}>
-                <ul style={styles.navList}>
-                    <li style={styles.navItem}>
-                        <Link to="/" style={styles.navLink}>
-                            <FontAwesomeIcon icon={faHome} style={styles.icon} />
-                        </Link>
-                    </li>
-                    {userId && !isRecipeListPage && (
-                        <>
-                            <li style={styles.navItem}>
-                                <Link to="/recipelist" style={styles.navLink}>Recipe List</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <Link to="/profile" style={styles.navLink}>Profile</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <button onClick={this.handleLogout} style={{ ...styles.navLink, ...styles.logoutButton }}>
-                                    Logout
-                                </button>
-                            </li>
-                        </>
-                    )}
-                    {!userId && (
-                        <>
-                            <li style={styles.navItem}>
-                                <Link to="/login" style={styles.navLink}>Login</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <Link to="/registration" style={styles.navLink}>Register</Link>
-                            </li>
-                        </>
-                    )}
-                </ul>
-            </nav>
-        );
-    }
+    return (
+        <nav style={{
+            padding: '10px',
+            backgroundColor: '#004AAD', 
+            display: 'flex',
+            justifyContent: 'space-between',
+            alignItems: 'center',
+            color: '#F4C561' 
+        }}>
+            <h1 style={{ color: '#F4C561' }}>Recipe App</h1>
+            <div>
+                {location.pathname === '/home' ? (
+                    <>
+                        <Link to="/profile" style={linkStyle}>Profile</Link>
+                        <button onClick={handleLogout} style={linkStyle}>Logout</button>
+                    </>
+                ) : location.pathname === '/profile' ? (
+                    <>
+                        <Link to="/home" style={linkStyle}>Home</Link>
+                        <button onClick={handleLogout} style={linkStyle}>Logout</button>
+                    </>
+                ) : null}
+            </div>
+        </nav>
+    );
 }
 
-const styles = {
-    navbar: {
-        display: 'flex',
-        justifyContent: 'center',
-        backgroundColor: 'transparent',
-        padding: '10px 0',
-    },
-    navList: {
-        display: 'flex',
-        listStyle: 'none',
-        margin: 0,
-        padding: 0,
-    },
-    navItem: {
-        margin: '0 15px',
-    },
-    navLink: {
-        color: 'white',
-        textDecoration: 'none',
-        fontSize: '16px',
-        padding: '8px 12px',
-        borderRadius: '4px',
-    },
-    icon: {
-        fontSize: '24px',
-        padding: '4px',
-        borderRadius: '50%',
-        color: 'black',
-    },
-    logoutButton: {
-        backgroundColor: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-    },
+const linkStyle = {
+    color: '#F4C561', 
+    textDecoration: 'none',
+    margin: '0 10px',
+    fontSize: '16px',
+    border: 'none', 
+    background: 'none', 
+    cursor: 'pointer', 
 };
 
 export default Navbar;
