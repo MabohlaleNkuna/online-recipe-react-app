@@ -1,113 +1,91 @@
-import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome } from '@fortawesome/free-solid-svg-icons';
 
-class Navbar extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            userId: localStorage.getItem('userId'),
-            location: window.location.pathname
-        };
-    }
+const Navbar = () => {
+    const [userId, setUserId] = useState(localStorage.getItem('userId'));
+    const [location, setLocation] = useState(window.location.pathname);
+    const navigate = useNavigate();
 
-    handleLogout = () => {
+    const handleLogout = () => {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
-        this.props.history.push('/login');
+        navigate('/login');
     };
 
-    componentDidMount() {
-        this.setState({ location: window.location.pathname });
-        window.addEventListener('popstate', this.handleLocationChange);
-    }
+    useEffect(() => {
+        setLocation(window.location.pathname);
+        const handleLocationChange = () => setLocation(window.location.pathname);
+        window.addEventListener('popstate', handleLocationChange);
 
-    componentWillUnmount() {
-        window.removeEventListener('popstate', this.handleLocationChange);
-    }
+        return () => {
+            window.removeEventListener('popstate', handleLocationChange);
+        };
+    }, []);
 
-    handleLocationChange = () => {
-        this.setState({ location: window.location.pathname });
-    };
+    const isRecipeListPage = location === '/recipelist';
 
-    render() {
-        const { userId, location } = this.state;
-        const isRecipeListPage = location === '/recipelist';
-
-        return (
-            <nav style={styles.navbar}>
-                <ul style={styles.navList}>
-                    <li style={styles.navItem}>
-                        <Link to="/" style={styles.navLink}>
-                            <FontAwesomeIcon icon={faHome} style={styles.icon} />
-                        </Link>
-                    </li>
-                    {userId && !isRecipeListPage && (
-                        <>
-                            <li style={styles.navItem}>
-                                <Link to="/recipelist" style={styles.navLink}>Recipe List</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <Link to="/profile" style={styles.navLink}>Profile</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <button onClick={this.handleLogout} style={{ ...styles.navLink, ...styles.logoutButton }}>
-                                    Logout
-                                </button>
-                            </li>
-                        </>
-                    )}
-                    {!userId && (
-                        <>
-                            <li style={styles.navItem}>
-                                <Link to="/login" style={styles.navLink}>Login</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <Link to="/registration" style={styles.navLink}>Register</Link>
-                            </li>
-                        </>
-                    )}
-                </ul>
-            </nav>
-        );
-    }
-}
-
-const styles = {
-    navbar: {
-        display: 'flex',
-        justifyContent: 'center',
-        backgroundColor: 'transparent',
-        padding: '10px 0',
-    },
-    navList: {
-        display: 'flex',
-        listStyle: 'none',
-        margin: 0,
-        padding: 0,
-    },
-    navItem: {
-        margin: '0 15px',
-    },
-    navLink: {
-        color: 'white',
-        textDecoration: 'none',
-        fontSize: '16px',
-        padding: '8px 12px',
-        borderRadius: '4px',
-    },
-    icon: {
-        fontSize: '24px',
-        padding: '4px',
-        borderRadius: '50%',
-        color: 'black',
-    },
-    logoutButton: {
-        backgroundColor: 'transparent',
-        border: 'none',
-        cursor: 'pointer',
-    },
+    return (
+        <nav className="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm py-3 fixed-top">
+            <div className="container-fluid">
+                <Link to="/" className="navbar-brand">
+                    <FontAwesomeIcon icon={faHome} className="text-white" />
+                </Link>
+                <button
+                    className="navbar-toggler"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarNav"
+                    aria-controls="navbarNav"
+                    aria-expanded="false"
+                    aria-label="Toggle navigation"
+                >
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarNav">
+                    <ul className="navbar-nav ms-auto">
+                        {userId && !isRecipeListPage && (
+                            <>
+                                <li className="nav-item">
+                                    <Link to="/recipelist" className="nav-link">
+                                        Recipe List
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/profile" className="nav-link">
+                                        Profile
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <button
+                                        onClick={handleLogout}
+                                        className="nav-link btn btn-link text-white"
+                                    >
+                                        Logout
+                                    </button>
+                                </li>
+                            </>
+                        )}
+                        {!userId && (
+                            <>
+                                <li className="nav-item">
+                                    <Link to="/login" className="nav-link">
+                                        Login
+                                    </Link>
+                                </li>
+                                <li className="nav-item">
+                                    <Link to="/registration" className="nav-link">
+                                        Register
+                                    </Link>
+                                </li>
+                            </>
+                        )}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    );
 };
 
 export default Navbar;
