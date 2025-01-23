@@ -2,9 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import RecipeCard from './RecipeCard';
 import Button from './Button';
-import SearchBar from './SearchBar'; 
+import SearchBar from './SearchBar';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faUser } from '@fortawesome/free-solid-svg-icons';
+import { faUser, faPlus } from '@fortawesome/free-solid-svg-icons';
 
 function HomePage() {
     const [userData, setUserData] = useState(null);
@@ -51,8 +51,8 @@ function HomePage() {
         fetchRecipes();
     }, []);
 
-    const handleProfileClick = () => {
-        navigate('/profile');
+    const handleNavigateToRecipeList = () => {
+        navigate('/recipelist');
     };
 
     const filteredRecipes = recipes.filter(recipe =>
@@ -71,14 +71,9 @@ function HomePage() {
     return (
         <div style={{ textAlign: 'center', padding: '20px', position: 'relative' }}>
             {isLoggedIn && (
-                <nav style={{ padding: '10px', display: 'flex', justifyContent: 'space-around' }}>
-                </nav>
-            )}
-
-            {isLoggedIn && (
                 <FontAwesomeIcon
                     icon={faUser}
-                    onClick={handleProfileClick}
+                    onClick={() => navigate('/profile')}
                     style={{
                         position: 'fixed',
                         top: '20px',
@@ -86,17 +81,47 @@ function HomePage() {
                         cursor: 'pointer',
                         fontSize: '30px',
                         color: '#004aad',
-                        zIndex: 1000, 
-                        pointerEvents: 'auto' 
+                        zIndex: 1000,
                     }}
                 />
             )}
+
+            {isLoggedIn && (
+                <FontAwesomeIcon
+                    icon={faPlus}
+                    onClick={handleNavigateToRecipeList}
+                    style={{
+                        position: 'fixed',
+                        bottom: '20px',
+                        right: '20px',
+                        cursor: 'pointer',
+                        fontSize: '50px',
+                        color: '#004aad',
+                        zIndex: 1000,
+                        animation: 'pulse 1.5s infinite',
+                    }}
+                    title="Add or Edit Recipes"
+                />
+            )}
+
+            <style>
+                {`
+                    @keyframes pulse {
+                        0% { transform: scale(1); }
+                        50% { transform: scale(1.2); }
+                        100% { transform: scale(1); }
+                    }
+                `}
+            </style>
 
             <h1>Welcome to the Recipe App</h1>
             {isLoggedIn ? (
                 <div>
                     <p>Hello, {userData?.name || 'User'}!</p>
                     <p>Enjoy browsing our recipes.</p>
+                    <p style={{ color: '#004aad', fontSize: '18px', fontWeight: 'bold' }}>
+                        Click the <FontAwesomeIcon icon={faPlus} style={{ fontSize: '20px', color: '#004aad' }} /> icon below to add new recipes!
+                    </p>
                 </div>
             ) : (
                 <div>
@@ -110,7 +135,7 @@ function HomePage() {
                                 background: 'none',
                                 border: 'none',
                                 cursor: 'pointer',
-                                textDecoration: 'underline'
+                                textDecoration: 'underline',
                             }}
                         />{' '}
                         or{' '}
@@ -122,29 +147,32 @@ function HomePage() {
                                 background: 'none',
                                 border: 'none',
                                 cursor: 'pointer',
-                                textDecoration: 'underline'
+                                textDecoration: 'underline',
                             }}
                         />{' '}
                         to access more features.
                     </p>
                 </div>
             )}
+
             <div style={{ marginTop: '40px' }}>
                 <h2>Search and Browse Recipes</h2>
                 <SearchBar
                     searchQuery={searchTerm}
-                    handleSearchChange={(e) => setSearchTerm(e.target.value)} // Update this to use SearchBar's props
+                    handleSearchChange={(e) => setSearchTerm(e.target.value)}
                 />
                 {isPending ? (
                     <p>Loading recipes...</p>
                 ) : error ? (
                     <p>{error}</p>
                 ) : (
-                    <div style={{
-                        display: 'grid',
-                        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-                        gap: '20px'
-                    }}>
+                    <div
+                        style={{
+                            display: 'grid',
+                            gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+                            gap: '20px',
+                        }}
+                    >
                         {filteredRecipes.map(recipe => (
                             <RecipeCard
                                 key={recipe.id}

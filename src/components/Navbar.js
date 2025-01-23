@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome } from '@fortawesome/free-solid-svg-icons';
+import { faHome, faUser } from '@fortawesome/free-solid-svg-icons';
 
 class Navbar extends Component {
     constructor(props) {
         super(props);
         this.state = {
             userId: localStorage.getItem('userId'),
-            location: window.location.pathname
+            location: window.location.pathname,
         };
     }
 
@@ -49,10 +49,15 @@ class Navbar extends Component {
                                 <Link to="/recipelist" style={styles.navLink}>Recipe List</Link>
                             </li>
                             <li style={styles.navItem}>
-                                <Link to="/profile" style={styles.navLink}>Profile</Link>
+                                <Link to="/profile" style={styles.navLink}>
+                                    <FontAwesomeIcon icon={faUser} style={styles.icon} />
+                                </Link>
                             </li>
                             <li style={styles.navItem}>
-                                <button onClick={this.handleLogout} style={{ ...styles.navLink, ...styles.logoutButton }}>
+                                <button
+                                    onClick={this.handleLogout}
+                                    style={{ ...styles.navLink, ...styles.logoutButton }}
+                                >
                                     Logout
                                 </button>
                             </li>
