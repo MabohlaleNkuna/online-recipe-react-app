@@ -47,7 +47,7 @@ npm install -g json-server
 npm install -g json-server
 
 **Run the mock server:**
-json-server --watch db.json --port 3000
+npx json-server --watch src/database/db.json --port 3000
 
 **Start the React app:**
 npm start
@@ -59,7 +59,7 @@ Home Page: Displays a welcome message and allows users to search and browse reci
 Recipe List: Shows all recipes, with options to add, edit, or delete recipes.
 Registration: Allows new users to sign up.
 Login: Allows existing users to log in.
-Profile Page: Displays the user's profile and favorite recipes.
+Profile Page: Displays the user's profile and favorite recipes. Click on the profile icon to view your profile details.
 
 ## Components
 **App.js**
