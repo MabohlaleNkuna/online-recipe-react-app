@@ -14,7 +14,6 @@ class Navbar extends Component {
     handleLogout = (navigate) => {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
-        this.setState({ userId: null }); // Update state on logout
         navigate('/login');
     };
 

@@ -124,7 +124,7 @@ const RecipeList = () => {
     const handleEditRecipe = (recipe) => {
         setEditRecipeId(recipe.id);
         setEditRecipe(recipe);
-        // Scroll to the update form
+    
         setTimeout(() => {
             const updateForm = document.getElementById('update-form');
             if (updateForm) {
@@ -161,7 +161,7 @@ const RecipeList = () => {
             </div>
 
             <section>
-                <h1>Recipe List</h1>
+                <h1>Add and update Recipes</h1>
                 <SearchBar searchQuery={searchQuery} handleSearchChange={handleSearchChange} />
 
                 {editRecipeId === null && (

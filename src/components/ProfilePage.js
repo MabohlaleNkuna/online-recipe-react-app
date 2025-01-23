@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react'; 
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import '../styles/ProfilePage.css';
+import { FaHome } from 'react-icons/fa';  // Importing home icon
 
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null;
@@ -161,20 +162,21 @@ function ProfilePage() {
     };
 
     const handleLogout = () => {
-        // Remove user from localStorage
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
         window.dispatchEvent(new Event('username')); 
-        // Redirect to HomePage
         navigate('/');
     };
 
     const handleNavigateToRecipeList = () => {
         navigate('/recipelist');
     };
-console.log('test');
+
     return (
         <div className="profile-page">
+            <div className="home-icon" onClick={() => navigate('/')}>
+                <FaHome size={30} />
+            </div>
             <div className="profile-picture">
                 <img src={userData.profilePicture || 'default-profile-pic-url'} alt="Profile" />
             </div>
@@ -193,25 +195,13 @@ console.log('test');
                     label="Delete Profile" 
                     color="#FF0000" 
                 />
-                <button 
+                <Button 
                     onClick={handleLogout} 
-                    className="logout-button"
-                >
-                    Logout
-                </button>
-                <div className="update-recipes">
-                    <p>
-                        To update or add new recipes,{' '}
-                        <button 
-                            onClick={handleNavigateToRecipeList} 
-                        >
-                            click here
-                        </button>.
-                    </p>
-                </div>
+                    label="Logout" 
+                    color="#FF0000" 
+                />
             </div>
 
-            {/* Modal for updating profile */}
             <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
                 <h3>Update Profile</h3>
                 <div>
@@ -263,7 +253,7 @@ console.log('test');
                     />
                 </div>
                 <Button 
-                    onClick={handleUpdateProfile} 
+                    onClick={() => { handleUpdateProfile(); handleUpdatePassword(); }} 
                     label="Save Changes" 
                     color="#004AAD" 
                 />

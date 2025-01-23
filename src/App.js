@@ -13,6 +13,7 @@ function App() {
         const handleStorageChange = () => {
             console.log("test",localStorage.getItem('username'));
             setLoggedInUser(localStorage.getItem('username'));
+            window.dispatchEvent(new Event('username')); 
         };
 
         window.addEventListener('username', handleStorageChange);
