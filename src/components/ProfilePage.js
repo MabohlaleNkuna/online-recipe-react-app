@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react'; 
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Button from './Button';
 import '../styles/ProfilePage.css';
-import { FaHome } from 'react-icons/fa';  // Importing home icon
+import { FaHome } from 'react-icons/fa';
 
 function Modal({ isOpen, onClose, children }) {
     if (!isOpen) return null;
@@ -26,7 +26,6 @@ function ProfilePage() {
         username: '',
         password: '',
     });
-
     const [isEditing, setIsEditing] = useState(false);
     const [newData, setNewData] = useState({
         name: '',
@@ -173,33 +172,21 @@ function ProfilePage() {
     };
 
     return (
-        <div className="profile-page">
-            <div className="home-icon" onClick={() => navigate('/')}>
+        <div className="profile-page container mt-5">
+            <div className="home-icon position-absolute top-0 end-0 p-3" onClick={() => navigate('/')}>
                 <FaHome size={30} />
             </div>
-            <div className="profile-picture">
-                <img src={userData.profilePicture || 'default-profile-pic-url'} alt="Profile" />
+            <div className="profile-picture text-center mb-4">
+                <img src={userData.profilePicture || 'default-profile-pic-url'} alt="Profile" className="img-fluid rounded-circle" />
             </div>
-            <div className="profile-content">
-                <p><strong>Username:</strong> {userData.username}</p>
+            <div className="profile-content text-center">
+                <h2>{userData.username}</h2>
                 <p><strong>Name:</strong> {userData.name}</p>
                 <p><strong>Surname:</strong> {userData.surname}</p>
                 <p><strong>Email:</strong> {userData.email}</p>
-                <Button 
-                    onClick={() => setIsEditing(true)} 
-                    label="Update Profile" 
-                    color="#004AAD" 
-                />
-                <Button 
-                    onClick={handleDeleteProfile} 
-                    label="Delete Profile" 
-                    color="#FF0000" 
-                />
-                <Button 
-                    onClick={handleLogout} 
-                    label="Logout" 
-                    color="#FF0000" 
-                />
+                <Button onClick={() => setIsEditing(true)} label="Update Profile" color="#004AAD" />
+                <Button onClick={handleDeleteProfile} label="Delete Profile" color="#FF0000" />
+                <Button onClick={handleLogout} label="Logout" color="#FF0000" />
             </div>
 
             <Modal isOpen={isEditing} onClose={() => setIsEditing(false)}>
@@ -252,11 +239,7 @@ function ProfilePage() {
                         onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
-                <Button 
-                    onClick={() => { handleUpdateProfile(); handleUpdatePassword(); }} 
-                    label="Save Changes" 
-                    color="#004AAD" 
-                />
+                <Button onClick={() => { handleUpdateProfile(); handleUpdatePassword(); }} label="Save Changes" color="#004AAD" />
             </Modal>
         </div>
     );
