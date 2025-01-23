@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import Button from './Button';  // Importing the Button component
 
 const Registration = () => {
     const [username, setUsername] = useState('');
@@ -18,7 +20,7 @@ const Registration = () => {
             const reader = new FileReader();
             reader.onloadend = async () => {
                 const profilePictureBase64 = reader.result;
-                
+
                 const userData = {
                     username,
                     password,
@@ -43,12 +45,12 @@ const Registration = () => {
 
                     navigate('/login');
                 } catch (error) {
-                    setError(error.message); 
+                    setError(error.message);
                 }
             };
             reader.readAsDataURL(profilePicture);
         } else {
-            setError('Please fill in all fields and upload a profile picture.'); 
+            setError('Please fill in all fields and upload a profile picture.');
         }
     };
 
@@ -57,46 +59,71 @@ const Registration = () => {
     };
 
     return (
-        <div>
-            <h2>Registration</h2>
-            {error && <p style={{ color: 'red' }}>{error}</p>} 
-            <form onSubmit={handleRegister}>
-                <input
-                    type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
-                />
-                <input
-                    type="password"
-                    placeholder="Password"
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="Name"
-                    value={name}
-                    onChange={(e) => setName(e.target.value)}
-                />
-                <input
-                    type="text"
-                    placeholder="Surname"
-                    value={surname}
-                    onChange={(e) => setSurname(e.target.value)}
-                />
-                <input
-                    type="email"
-                    placeholder="Email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                />
-                <input
-                    type="file"
-                    accept="image/*"
-                    onChange={handleFileChange}
-                />
-                <button type="submit">Register</button>
+        <div className="container mt-5">
+            <h2 className="text-center mb-4">Registration</h2>
+            {error && <div className="alert alert-danger text-center">{error}</div>}
+            <form onSubmit={handleRegister} className="border p-4 shadow rounded bg-light">
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Username"
+                        value={username}
+                        onChange={(e) => setUsername(e.target.value)}
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Name"
+                        value={name}
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="text"
+                        className="form-control"
+                        placeholder="Surname"
+                        value={surname}
+                        onChange={(e) => setSurname(e.target.value)}
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="email"
+                        className="form-control"
+                        placeholder="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                    />
+                </div>
+                <div className="mb-3">
+                    <input
+                        type="file"
+                        className="form-control"
+                        accept="image/*"
+                        onChange={handleFileChange}
+                    />
+                </div>
+                <div className="d-grid">
+                    <Button 
+                        onClick={handleRegister} 
+                        label="Register" 
+                        color="#004aad" 
+                        textColor="#ffffff" 
+                    />
+                </div>
             </form>
         </div>
     );

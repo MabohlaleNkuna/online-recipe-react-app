@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faHome, faUser } from '@fortawesome/free-solid-svg-icons';
 
@@ -8,76 +8,73 @@ class Navbar extends Component {
         super(props);
         this.state = {
             userId: localStorage.getItem('userId'),
-            location: window.location.pathname,
         };
     }
 
-    handleLogout = () => {
+    handleLogout = (navigate) => {
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
-        this.props.history.push('/login');
-    };
-
-    componentDidMount() {
-        this.setState({ location: window.location.pathname });
-        window.addEventListener('popstate', this.handleLocationChange);
-    }
-
-    componentWillUnmount() {
-        window.removeEventListener('popstate', this.handleLocationChange);
-    }
-
-    handleLocationChange = () => {
-        this.setState({ location: window.location.pathname });
+        this.setState({ userId: null }); // Update state on logout
+        navigate('/login');
     };
 
     render() {
-        const { userId, location } = this.state;
-        const isRecipeListPage = location === '/recipelist';
-
+        const { userId } = this.state;
         return (
-            <nav style={styles.navbar}>
-                <ul style={styles.navList}>
-                    <li style={styles.navItem}>
-                        <Link to="/" style={styles.navLink}>
-                            <FontAwesomeIcon icon={faHome} style={styles.icon} />
-                        </Link>
-                    </li>
-                    {userId && !isRecipeListPage && (
-                        <>
-                            <li style={styles.navItem}>
-                                <Link to="/recipelist" style={styles.navLink}>Recipe List</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <Link to="/profile" style={styles.navLink}>
-                                    <FontAwesomeIcon icon={faUser} style={styles.icon} />
-                                </Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <button
-                                    onClick={this.handleLogout}
-                                    style={{ ...styles.navLink, ...styles.logoutButton }}
-                                >
-                                    Logout
-                                </button>
-                            </li>
-                        </>
-                    )}
-                    {!userId && (
-                        <>
-                            <li style={styles.navItem}>
-                                <Link to="/login" style={styles.navLink}>Login</Link>
-                            </li>
-                            <li style={styles.navItem}>
-                                <Link to="/registration" style={styles.navLink}>Register</Link>
-                            </li>
-                        </>
-                    )}
-                </ul>
-            </nav>
+            <NavbarLinks userId={userId} handleLogout={this.handleLogout} />
         );
     }
 }
+
+// Functional component for navbar links
+const NavbarLinks = ({ userId, handleLogout }) => {
+    const location = useLocation();
+    const navigate = useNavigate();
+
+    const isRecipeListPage = location.pathname === '/recipelist';
+
+    return (
+        <nav style={styles.navbar}>
+            <ul style={styles.navList}>
+                <li style={styles.navItem}>
+                    <Link to="/" style={styles.navLink}>
+                        <FontAwesomeIcon icon={faHome} style={styles.icon} />
+                    </Link>
+                </li>
+                {userId && !isRecipeListPage && (
+                    <>
+                        <li style={styles.navItem}>
+                            <Link to="/recipelist" style={styles.navLink}>Recipe List</Link>
+                        </li>
+                        <li style={styles.navItem}>
+                            <Link to="/profile" style={styles.navLink}>
+                                <FontAwesomeIcon icon={faUser} style={styles.icon} />
+                            </Link>
+                        </li>
+                        <li style={styles.navItem}>
+                            <button
+                                onClick={() => handleLogout(navigate)} 
+                                style={{ ...styles.navLink, ...styles.logoutButton }}
+                            >
+                                Logout
+                            </button>
+                        </li>
+                    </>
+                )}
+                {!userId && (
+                    <>
+                        <li style={styles.navItem}>
+                            <Link to="/login" style={styles.navLink}>Login</Link>
+                        </li>
+                        <li style={styles.navItem}>
+                            <Link to="/registration" style={styles.navLink}>Register</Link>
+                        </li>
+                    </>
+                )}
+            </ul>
+        </nav>
+    );
+};
 
 const styles = {
     navbar: {

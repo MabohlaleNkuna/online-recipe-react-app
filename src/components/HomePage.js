@@ -83,6 +83,8 @@ function HomePage() {
                         color: '#004aad',
                         zIndex: 1000,
                     }}
+                    onMouseOver={(e) => (e.currentTarget.style.color = '#003580')}
+                    onMouseOut={(e) => (e.currentTarget.style.color = '#004aad')}
                 />
             )}
 
@@ -101,6 +103,8 @@ function HomePage() {
                         animation: 'pulse 1.5s infinite',
                     }}
                     title="Add or Edit Recipes"
+                    onMouseOver={(e) => (e.currentTarget.style.color = '#003580')}
+                    onMouseOut={(e) => (e.currentTarget.style.color = '#004aad')}
                 />
             )}
 
@@ -110,6 +114,10 @@ function HomePage() {
                         0% { transform: scale(1); }
                         50% { transform: scale(1.2); }
                         100% { transform: scale(1); }
+                    }
+                    button:hover {
+                        background-color: #003580 !important;
+                        color: white !important;
                     }
                 `}
             </style>

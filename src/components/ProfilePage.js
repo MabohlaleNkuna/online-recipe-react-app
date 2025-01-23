@@ -164,6 +164,7 @@ function ProfilePage() {
         // Remove user from localStorage
         localStorage.removeItem('userId');
         localStorage.removeItem('username');
+        window.dispatchEvent(new Event('username')); 
         // Redirect to HomePage
         navigate('/');
     };
@@ -171,7 +172,7 @@ function ProfilePage() {
     const handleNavigateToRecipeList = () => {
         navigate('/recipelist');
     };
-
+console.log('test');
     return (
         <div className="profile-page">
             <div className="profile-picture">

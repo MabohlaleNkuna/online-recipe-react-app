@@ -24,6 +24,7 @@ const Login = () => {
             if (data.length > 0 && data[0].password === password) {
                 localStorage.setItem('userId', data[0].id); 
                 localStorage.setItem('username', username); 
+                window.dispatchEvent(new Event('username')); 
                 navigate('/');
             } else {
                 alert('Invalid credentials');
