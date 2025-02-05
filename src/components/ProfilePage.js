@@ -42,7 +42,7 @@ function ProfilePage() {
             const userId = localStorage.getItem('userId');
             if (userId) {
                 try {
-                    const response = await fetch(`http://localhost:3000/users/${userId}`);
+                    const response = await fetch(`http://localhost:5000/users/${userId}`);
                     if (response.ok) {
                         const data = await response.json();
                         setUserData(data);
@@ -68,7 +68,7 @@ function ProfilePage() {
         const userId = localStorage.getItem('userId');
         if (userId) {
             try {
-                const response = await fetch(`http://localhost:3000/users/${userId}`, {
+                const response = await fetch(`http://localhost:5000/users/${userId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -105,7 +105,7 @@ function ProfilePage() {
         const userId = localStorage.getItem('userId');
         if (userId) {
             try {
-                const response = await fetch(`http://localhost:3000/users/${userId}`, {
+                const response = await fetch(`http://localhost:5000/users/${userId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -143,7 +143,7 @@ function ProfilePage() {
         const userId = localStorage.getItem('userId');
         if (userId) {
             try {
-                const response = await fetch(`http://localhost:3000/users/${userId}`, {
+                const response = await fetch(`http://localhost:5000/users/${userId}`, {
                     method: 'DELETE',
                 });
                 if (response.ok) {

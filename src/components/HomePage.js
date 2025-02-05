@@ -22,7 +22,7 @@ function HomePage() {
             setIsLoggedIn(true);
             const fetchUserData = async () => {
                 try {
-                    const response = await fetch(`http://localhost:3000/users/${userId}`);
+                    const response = await fetch(`http://localhost:5000/users/${userId}`);
                     if (response.ok) {
                         const data = await response.json();
                         setUserData(data);
@@ -38,7 +38,7 @@ function HomePage() {
 
         const fetchRecipes = async () => {
             try {
-                const response = await fetch('http://localhost:3000/Recipe');
+                const response = await fetch('http://localhost:5000/Recipe');
                 if (!response.ok) throw new Error('Failed to fetch recipes');
                 const data = await response.json();
                 setRecipes(data);

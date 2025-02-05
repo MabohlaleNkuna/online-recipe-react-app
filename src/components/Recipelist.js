@@ -4,13 +4,13 @@ import Navbar from './Navbar';
 import '../styles/Recipelist.css';
 
 const fetchRecipes = async () => {
-    const response = await fetch('http://localhost:3000/Recipe');
+    const response = await fetch('http://localhost:5000/Recipe');
     if (!response.ok) throw new Error('Failed to fetch Recipe');
     return response.json();
 };
 
 const addRecipe = async (recipe) => {
-    const response = await fetch('http://localhost:3000/Recipe', {
+    const response = await fetch('http://localhost:5000/Recipe', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(recipe),
@@ -20,14 +20,14 @@ const addRecipe = async (recipe) => {
 };
 
 const deleteRecipe = async (id) => {
-    const response = await fetch(`http://localhost:3000/Recipe/${id}`, {
+    const response = await fetch(`http://localhost:5000/Recipe/${id}`, {
         method: 'DELETE',
     });
     if (!response.ok) throw new Error('Failed to delete recipe');
 };
 
 const updateRecipe = async (id, updatedRecipe) => {
-    const response = await fetch(`http://localhost:3000/Recipe/${id}`, {
+    const response = await fetch(`http://localhost:5000/Recipe/${id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(updatedRecipe),
