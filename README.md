@@ -47,7 +47,7 @@ npm install -g json-server
 npm install -g json-server
 
 **Run the mock server:**
-npx json-server --watch src/database/db.json --port 3000
+npx json-server --watch src/database/db.json --port 5000
 
 **Start the React app:**
 npm start
