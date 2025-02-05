@@ -1,10 +1,9 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import Button from './Button';  // Importing the Button component
+import Button from './Button';
 
 const Registration = () => {
-    const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [name, setName] = useState('');
     const [surname, setSurname] = useState('');
@@ -15,14 +14,13 @@ const Registration = () => {
 
     const handleRegister = async (e) => {
         e.preventDefault();
-
-        if (username && password && name && surname && email && profilePicture) {
+        if (password && name && surname && email && profilePicture) {
             const reader = new FileReader();
             reader.onloadend = async () => {
                 const profilePictureBase64 = reader.result;
-
                 const userData = {
-                    username,
+                    name,
+                    surname,
                     password,
                     name,
                     surname,
@@ -60,28 +58,10 @@ const Registration = () => {
 
     return (
         <div className="container mt-5">
-            <h2 className="text-center mb-4">Registration</h2>
+            <h2 className="text-center mb-4">Register</h2>
             {error && <div className="alert alert-danger text-center">{error}</div>}
             <form onSubmit={handleRegister} className="border p-4 shadow rounded bg-light">
-                <div className="mb-3">
-                    <input
-                        type="text"
-                        className="form-control"
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                    />
-                </div>
-                <div className="mb-3">
-                    <input
-                        type="password"
-                        className="form-control"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                    />
-                </div>
-                <div className="mb-3">
+            <div className="mb-3">
                     <input
                         type="text"
                         className="form-control"
@@ -101,6 +81,16 @@ const Registration = () => {
                 </div>
                 <div className="mb-3">
                     <input
+                        type="password"
+                        className="form-control"
+                        placeholder="Password"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+               
+                <div className="mb-3">
+                    <input
                         type="email"
                         className="form-control"
                         placeholder="Email"
@@ -117,14 +107,12 @@ const Registration = () => {
                     />
                 </div>
                 <div className="d-grid">
-                    <Button 
-                        onClick={handleRegister} 
-                        label="Register" 
-                        color="#004aad" 
-                        textColor="#ffffff" 
-                    />
+                    <Button onClick={handleRegister} label="Register" color="#004aad" textColor="#ffffff" />
                 </div>
             </form>
+            <p className="text-center mt-3">
+                Already have an account? <Link to="/login">Log in here</Link>
+            </p>
         </div>
     );
 };

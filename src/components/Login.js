@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 
 const Login = () => {
-    const [username, setUsername] = useState('');
+    const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const navigate = useNavigate();
 
     useEffect(() => {
-        // Check if user is already logged in on component mount
         const userId = localStorage.getItem('userId');
         if (userId) {
-            navigate('/'); 
+            navigate('/');
         }
     }, [navigate]);
 
     const handleLogin = async (e) => {
         e.preventDefault();
-
         try {
-            const response = await fetch(`http://localhost:5000/users?username=${encodeURIComponent(username)}`);
+            const response = await fetch(`http://localhost:5000/users?email=${encodeURIComponent(email)}`);
             const data = await response.json();
-
             if (data.length > 0 && data[0].password === password) {
-                localStorage.setItem('userId', data[0].id); 
-                localStorage.setItem('username', username); 
-                window.dispatchEvent(new Event('username')); 
+                localStorage.setItem('userId', data[0].id);
+                localStorage.setItem('email', email);
+                window.dispatchEvent(new Event('email'));
                 navigate('/');
             } else {
                 alert('Invalid credentials');
@@ -41,9 +38,9 @@ const Login = () => {
             <form onSubmit={handleLogin}>
                 <input
                     type="text"
-                    placeholder="Username"
-                    value={username}
-                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     style={{ display: 'block', margin: '10px auto' }}
                 />
                 <input
@@ -55,6 +52,9 @@ const Login = () => {
                 />
                 <button type="submit" style={{ display: 'block', margin: '10px auto' }}>Login</button>
             </form>
+            <p>
+                Don't have an account? <Link to="/registration">Create an account</Link>
+            </p>
         </div>
     );
 };
